@@ -1,12 +1,13 @@
-# Team Name
+#Hoping for a C++
 
 Project description (~1 paragraph)
 
 ## Team Members and Roles
 
-* Member 1 (Role 1, Role 2)
-* Member 2 (Role 3, Role 4)
-* Member 3 (Role 5, Role 6)
+* Justin Rickert (Role 1, Role 2)
+* Dylan Vannatter (Role 3, Role 4)
+* Emily Linderman (Role 5, Role 6)
+* Dawson Herner (Role 7, Role 8)
 
 ## Prerequisites
 
