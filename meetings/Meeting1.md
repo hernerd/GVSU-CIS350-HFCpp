@@ -1,0 +1,20 @@
+## Meeting 1 minutes
+
+Team name: Hoping for a C++
+
+Members present: Justin Rickert, Emily Linderman, Dylan Vannatter, Dawson Herner
+
+Date: 9/18/2020
+
+Time: 10AM - 11AM
+
+Discussion points: 
+
+* We would like to model a lot of Binding Of Issac's features in our game
+* Basics of how we want the game to look and feel
+* The potential tech stacks we may choose to use in creating our game
+
+Goals for next week (include responsibilities)
+
+* Research the tools we may use to create the game (is pygame the best option?)
+* Think about what a basic skeleton for our game would look like and how we could implement it
