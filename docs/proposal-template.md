@@ -1,6 +1,6 @@
-Team name:
+Team name: Hoping for a C++ (HFCpp)
 
-Team members:
+Team members: Dylan Vannatter, Dawson Herner, Justin Rickert, Emily Linderman
 
 # Introduction
 
