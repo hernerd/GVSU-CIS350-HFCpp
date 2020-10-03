@@ -1,5 +1,6 @@
-import pygame
 import os.path
+
+import pygame
 
 from src.powerUp import MovementPowerUp
 from src.types import Player
@@ -12,17 +13,16 @@ screen = pygame.display.set_mode((800, 600))
 
 pygame.display.set_caption("Dungeon Crawler")
 
-
-#Player
-playerImage  = pygame.image.load(os.path.join(filepath, "assets/player.png"))
+# Player
+playerImage = pygame.image.load(os.path.join(filepath, "assets/player.png"))
 player = Player(370, 480)
 playerX_change = 0
 playerY_change = 0
 
-#Bullet
+# Bullet
 #   Dead - bullet is not shot yet
 #   Live - bullet is in motion
-bulletIcon = pygame.image.load(os.path.join(filepath,"assets/projectile.png"))
+bulletIcon = pygame.image.load(os.path.join(filepath, "assets/projectile.png"))
 bulletX = 370
 bulletY = 480
 bulletX_change = 0
@@ -30,31 +30,36 @@ bulletY_change = .5
 bullet_state = "dead"
 direction_shot = ""
 
-#Powerups
+# Powerups
 powerUpsOnScreen = [MovementPowerUp(200, 200)]
 powerUpsInEffect = []
+
 
 def displayPowerUp(powerUp):
     image = pygame.image.load(os.path.join(filepath, powerUp.imagePath))
     screen.blit(image, (powerUp.x, powerUp.y))
 
+
 def displayPlayer(x, y):
     screen.blit(playerImage, (x, y))
 
-def fire_bullet(x,y):
+
+def fire_bullet(x, y):
     global bullet_state
     bullet_state = "live"
-    screen. blit(bulletIcon, (x + 16,y + 10))
-#Game running
+    screen.blit(bulletIcon, (x + 16, y + 10))
+
+
+# Game running
 running = True
 while running:
-    screen.fill((0,0,0))
+    screen.fill((0, 0, 0))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
         if event.type == pygame.KEYDOWN:
 
-            #Player Movement
+            # Player Movement
             if event.key == pygame.K_a:
                 playerX_change = -player.xSpeed
             if event.key == pygame.K_d:
@@ -64,24 +69,24 @@ while running:
             if event.key == pygame.K_s:
                 playerY_change = player.ySpeed
 
-            #Bullet Movement
-            if bullet_state is "dead" :
+            # Bullet Movement
+            if bullet_state is "dead":
                 if event.key == pygame.K_UP:
                     bulletX = player.playerX
                     direction_shot = "up"
-                    fire_bullet(bulletX,bulletY)
+                    fire_bullet(bulletX, bulletY)
                 if event.key == pygame.K_DOWN:
                     bulletX = player.playerX
                     direction_shot = "down"
-                    fire_bullet(bulletX,bulletY)
+                    fire_bullet(bulletX, bulletY)
                 if event.key == pygame.K_LEFT:
                     bulletX = player.playerX
                     direction_shot = "left"
-                    fire_bullet(bulletX,bulletY)
+                    fire_bullet(bulletX, bulletY)
                 if event.key == pygame.K_RIGHT:
                     bulletX = player.playerX
                     direction_shot = "right"
-                    fire_bullet(bulletX,bulletY)
+                    fire_bullet(bulletX, bulletY)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
@@ -101,19 +106,19 @@ while running:
     elif player.playerY >= 560:
         player.playerY = 560
 
-    #Bullet Moving
+    # Bullet Moving
     if bulletY <= 0 or bulletY >= 600 or bulletX <= 0 or bulletX >= 800:
         bulletY = player.playerY
         bullet_state = "dead"
     if bullet_state is "live":
         fire_bullet(bulletX, bulletY)
-        if direction_shot is "up" :
+        if direction_shot is "up":
             bulletY -= bulletY_change
-        if direction_shot is "down" :
+        if direction_shot is "down":
             bulletY += bulletY_change
-        if direction_shot is "left" :
+        if direction_shot is "left":
             bulletX -= bulletY_change
-        if direction_shot is "right" :
+        if direction_shot is "right":
             bulletX += bulletY_change
 
     # check player contacting powerUp
@@ -131,6 +136,6 @@ while running:
     for powerUp in powerUpsInEffect:
         if powerUp.removePlayerEffectIfExpired(player):
             powerUpsInEffect.remove(powerUp)
-        
+
     displayPlayer(player.playerX, player.playerY)
     pygame.display.update()
