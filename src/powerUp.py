@@ -26,13 +26,11 @@ class MovementPowerUp(PowerUp):
         )
 
     def applyPlayerEffect(self, player):
-        print("apply effect")
         player.xSpeed *= 10
         player.ySpeed *= 10
 
     def removePlayerEffectIfExpired(self, player):
         if datetime.now() > self.expirationTime:
-            print("remove effect")
             player.xSpeed /= 10
             player.ySpeed /= 10
             return True
