@@ -3,7 +3,7 @@ import pygame
 import random
 
 from powerUp import MovementPowerUp
-from types import Player, Enemy, Obstacle
+from classes import Player, Enemy, Obstacle
 
 filepath = os.path.dirname(__file__)
 
@@ -25,6 +25,13 @@ crateX = 400
 crateY = 300
 crate = Obstacle(crateX, crateY)
 
+# Enemy
+enemyX = random.randint(0, 800)
+enemyY = random.randint(0, 600)
+enemy = Enemy(enemyX, enemyY)
+enemyX_change = 0.3
+enemyY_change = 0.1
+
 # player group
 player_group = pygame.sprite.Group()
 player_group.add(player)
@@ -33,11 +40,10 @@ player_group.add(player)
 obstacle_group = pygame.sprite.Group()
 obstacle_group.add(crate)
 
-# Enemy
-enemyImage = pygame.image.load(os.path.join(filepath, "assets/bee.png"))
-enemy = Enemy(random.randint(0,800), random.randint(0, 600))
-enemyX_change = 0.3
-enemyY_change = 0.1
+# enemy group
+enemy_group = pygame.sprite.Group()
+enemy_group.add(enemy)
+
 
 # Bullet
 #   Dead - bullet is not shot yet
@@ -51,21 +57,13 @@ bullet_state = "dead"
 direction_shot = ""
 
 # Powerups
-powerUpsOnScreen = [MovementPowerUp(random.randint(0,800), random.randint(0, 600))]
+powerUpsOnScreen = [MovementPowerUp(random.randint(0, 800), random.randint(0, 600))]
 powerUpsInEffect = []
 
 
 def displayPowerUp(powerUp):
     image = pygame.image.load(os.path.join(filepath, powerUp.imagePath))
     screen.blit(image, (powerUp.x, powerUp.y))
-
-
-# def displayPlayer(x, y):
-#     screen.blit(playerImage, (x, y))
-
-def displayEnemy(x, y):
-    screen.blit(enemyImage, (x, y))
-
 
 def fire_bullet(x, y):
     global bullet_state
@@ -82,7 +80,6 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-
         if event.type == pygame.KEYDOWN:
 
             # Player Movement
@@ -95,7 +92,6 @@ while running:
             if event.key == pygame.K_s:
                 playerY_change = player.ySpeed
 
-            
             # Bullet Movement
             if bullet_state is "dead":
                 if event.key == pygame.K_UP:
@@ -161,22 +157,24 @@ while running:
 
     player.pos(playerX, playerY)
 
-    #Enemy Movement
-    enemy.enemyX += enemyX_change
-    if enemy.enemyX <= 0:
+    # Enemy Movement
+    enemyX += enemyX_change
+    if enemyX <= 0:
         enemyX_change = 0.3
-    elif enemy.enemyX >= 760:
+    elif enemyX >= 760:
         enemyX_change = -0.3
 
-    enemy.enemyY += enemyY_change
-    if enemy.enemyY <= 0:
+    enemyY += enemyY_change
+    if enemyY <= 0:
         enemyY_change = 0.1
-    elif enemy.enemyY >= 560:
+    elif enemyY >= 560:
         enemyY_change = -0.1
 
-    #Checking Enemy Collisions 
-    if enemy.enemyX - 24 <= playerX <= enemy.enemyX + 24 and enemy.enemyY - 24 <= playerY <= enemy.enemyY + 24:
-            pygame.quit
+    enemy.pos(enemyX, enemyY)
+
+    # Checking Enemy Collisions
+    if pygame.sprite.collide_mask(player, enemy):
+        pygame.QUIT()
 
     # Bullet Moving
     if bulletY <= 0 or bulletY >= 600 or bulletX <= 0 or bulletX >= 800:
@@ -209,8 +207,8 @@ while running:
         if powerUp.removePlayerEffectIfExpired(player):
             powerUpsInEffect.remove(powerUp)
 
-    displayEnemy(enemy.enemyX, enemy.enemyY)
+    enemy_group.draw(screen)
     obstacle_group.draw(screen)
     player_group.draw(screen)
- 
+
     pygame.display.update()
