@@ -21,9 +21,18 @@ class Player(pygame.sprite.Sprite):
         self.x = x_pos
         self.y = y_pos
 
-class Enemy:
-
+class Enemy(pygame.sprite.Sprite):
     def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(filepath, "assets/bee.png")).convert_alpha()
+        self.enemyX = x
+        self.enemyY = y
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.mask = pygame.mask.from_surface(self.image)
+
+    def pos(self, x, y):
+        self.rect.center = [x, y]
         self.enemyX = x
         self.enemyY = y
        
