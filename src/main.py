@@ -29,8 +29,8 @@ crate = Obstacle(crateX, crateY)
 enemyX = random.randint(0, 800)
 enemyY = random.randint(0, 600)
 enemy = Enemy(enemyX, enemyY)
-enemyX_change = 0.3
-enemyY_change = 0.1
+enemy.x_change = 0.3
+enemy.y_change = 0.1
 
 # player group
 player_group = pygame.sprite.Group()
@@ -44,6 +44,42 @@ obstacle_group.add(crate)
 enemy_group = pygame.sprite.Group()
 enemy_group.add(enemy)
 
+# mobile group (sprites that move)
+mobile_group = pygame.sprite.Group()
+mobile_group.add(player)
+mobile_group.add(enemy)
+
+
+def check_object_collision(self, obstacle):
+    if pygame.sprite.collide_mask(self, obstacle):
+        if self.x_change < 0:
+            while pygame.sprite.collide_mask(self, obstacle):
+                self.x_change = .1
+                self.x += self.x_change
+                self.pos(self.x, self.y)
+            self.x_change = 0
+        elif self.x_change > 0:
+            while pygame.sprite.collide_mask(self, obstacle):
+                self.x_change = -.1
+                self.x += self.x_change
+                self.pos(self.x, self.y)
+            self.x_change = 0
+        if self.y_change < 0:
+            while pygame.sprite.collide_mask(self, obstacle):
+                self.y_change = .1
+                self.y += self.y_change
+                self.pos(self.x, self.y)
+            self.y_change = 0
+        elif self.y_change > 0:
+            while pygame.sprite.collide_mask(self, obstacle):
+                self.y_change = -.1
+                self.y += self.y_change
+                self.pos(self.x, self.y)
+            self.y_change = 0
+        if self.name == "enemy":
+            self.y_change = .3
+            self.x_change = .3
+
 
 # Bullet
 #   Dead - bullet is not shot yet
@@ -56,7 +92,7 @@ bulletY_change = .5
 bullet_state = "dead"
 direction_shot = ""
 
-# Powerups
+# Power-ups
 powerUpsOnScreen = [MovementPowerUp(random.randint(0, 800), random.randint(0, 600))]
 powerUpsInEffect = []
 
@@ -64,6 +100,7 @@ powerUpsInEffect = []
 def displayPowerUp(powerUp):
     image = pygame.image.load(os.path.join(filepath, powerUp.imagePath))
     screen.blit(image, (powerUp.x, powerUp.y))
+
 
 def fire_bullet(x, y):
     global bullet_state
@@ -84,13 +121,13 @@ while running:
 
             # Player Movement
             if event.key == pygame.K_a:
-                playerX_change = -player.xSpeed
+                player.x_change = -player.xSpeed
             if event.key == pygame.K_d:
-                playerX_change = player.xSpeed
+                player.x_change = player.xSpeed
             if event.key == pygame.K_w:
-                playerY_change = -player.ySpeed
+                player.y_change = -player.ySpeed
             if event.key == pygame.K_s:
-                playerY_change = player.ySpeed
+                player.y_change = player.ySpeed
 
             # Bullet Movement
             if bullet_state is "dead":
@@ -113,68 +150,44 @@ while running:
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
-                playerX_change = 0
+                player.x_change = 0
             if event.key == pygame.K_w or event.key == pygame.K_s:
-                playerY_change = 0
+                player.y_change = 0
 
-    playerX += playerX_change
-    if playerX <= 0:
-        playerX = 0
-    elif playerX >= 760:
-        playerX = 760
+    player.x += player.x_change
+    if player.x <= 0:
+        player.x = 0
+    elif player.x >= 800:
+        player.x = 800
 
-    playerY += playerY_change
-    if playerY <= 0:
-        playerY = 0
-    elif playerY >= 560:
-        playerY = 560
-
-    if pygame.sprite.collide_mask(player, crate):
-        if playerX_change < 0:
-            while pygame.sprite.collide_mask(player, crate):
-                playerX_change = .1
-                playerX += playerX_change
-                player.pos(playerX, playerY)
-            playerX_change = 0
-        elif playerX_change > 0:
-            while pygame.sprite.collide_mask(player, crate):
-                playerX_change = -.1
-                playerX += playerX_change
-                player.pos(playerX, playerY)
-            playerX_change = 0
-        if playerY_change < 0:
-            while pygame.sprite.collide_mask(player, crate):
-                playerY_change = .1
-                playerY += playerY_change
-                player.pos(playerX, playerY)
-            playerY_change = 0
-        elif playerY_change > 0:
-            while pygame.sprite.collide_mask(player, crate):
-                playerY_change = -.1
-                playerY += playerY_change
-                player.pos(playerX, playerY)
-            playerY_change = 0
-
-    player.pos(playerX, playerY)
+    player.y += player.y_change
+    if player.y <= 0:
+        player.y = 0
+    elif player.y >= 600:
+        player.y = 600
 
     # Enemy Movement
-    enemyX += enemyX_change
-    if enemyX <= 0:
-        enemyX_change = 0.3
-    elif enemyX >= 760:
-        enemyX_change = -0.3
+    enemy.x += enemy.x_change
+    if enemy.x <= 0:
+        enemy.x_change = 0.3
+    elif enemy.x >= 760:
+        enemy.x_change = -0.3
 
-    enemyY += enemyY_change
-    if enemyY <= 0:
-        enemyY_change = 0.1
-    elif enemyY >= 560:
-        enemyY_change = -0.1
+    enemy.y += enemy.y_change
+    if enemy.y <= 0:
+        enemy.y_change = 0.1
+    elif enemy.y >= 560:
+        enemy.y_change = -0.1
 
-    enemy.pos(enemyX, enemyY)
+    for mob in mobile_group:
+        check_object_collision(mob, crate)
+
+    enemy.pos(enemy.x, enemy.y)
+    player.pos(player.x, player.y)
 
     # Checking Enemy Collisions
     if pygame.sprite.collide_mask(player, enemy):
-        pygame.QUIT()
+        running = False
 
     # Bullet Moving
     if bulletY <= 0 or bulletY >= 600 or bulletX <= 0 or bulletX >= 800:
@@ -193,7 +206,7 @@ while running:
 
     # check player contacting powerUp
     for powerUp in powerUpsOnScreen:
-        if powerUp.x - 24 <= playerX <= powerUp.x + 24 and powerUp.y - 24 <= playerY <= powerUp.y + 24:
+        if powerUp.x - 24 <= player.x <= powerUp.x + 24 and powerUp.y - 24 <= player.y <= powerUp.y + 24:
             powerUp.applyPlayerEffect(player)
             powerUpsOnScreen.remove(powerUp)
             powerUpsInEffect.append(powerUp)
