@@ -19,7 +19,7 @@ This document describes the functional and non-functional requirements of the ga
    1. Bullets shall damage the player and enemy’s health if hit.
    1. Bullets shall not pass through obstacles.
 1. Power Ups
-   1. Powerups shall exist that changes the player’s or enemies’ stats. 
+   1. Powerups shall exist that changes the player’s stats. 
 
 # Non-Functional Requirements
 1. Infrastructure
