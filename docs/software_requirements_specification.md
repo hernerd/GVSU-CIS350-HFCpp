@@ -5,20 +5,20 @@ This document describes the functional and non-functional requirements of the ga
 1. Enemies
    1. Enemies shall shoot projectiles at the player.
    1. Enemies shall be injured when hit by player’s projectiles.
-2. Player
-   2. The player shall not walk through obstacles.
-   2. The player shall be able to pick up power ups.
-   2. The player shall lose health when touching enemies.
-   2. The player shall be able to move between rooms.
-   2. The player shall be able to attack enemies.
-   2. The player shall be able to shoot up, down, left, and right.
-   2. The player shall be able to interact with the environment.
-3. Bullets
-   3. Multiple bullets shall be allowed on the screen at once.
-   3. Bullets shall damage the player and enemy’s health if hit.
-   3. Bullets aren't allowed to pass through obstacles.
-4. Power Ups
-   4. Powerups shall exist that changes the player’s or enemies’ stats. 
+1. Player
+   1. The player shall not walk through obstacles.
+   1. The player shall be able to pick up power ups.
+   1. The player shall lose health when touching enemies.
+   1. The player shall be able to move between rooms.
+   1. The player shall be able to attack enemies.
+   1. The player shall be able to shoot up, down, left, and right.
+   1. The player shall be able to interact with the environment.
+1. Bullets
+   1. Multiple bullets shall be allowed on the screen at once.
+   1. Bullets shall damage the player and enemy’s health if hit.
+   1. Bullets aren't allowed to pass through obstacles.
+1. Power Ups
+   1. Powerups shall exist that changes the player’s or enemies’ stats. 
 
 # Non-Functional Requirements
 1. Infrastructure
