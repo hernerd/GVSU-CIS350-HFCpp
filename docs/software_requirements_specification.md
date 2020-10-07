@@ -5,6 +5,7 @@ This document describes the functional and non-functional requirements of the ga
 1. Enemies
    1. Enemies shall shoot projectiles at the player.
    1. Enemies shall be injured when hit by player’s projectiles.
+   1. Enemies shall randomly drop power ups upon death.
 1. Player
    1. The player shall not walk through obstacles.
    1. The player shall be able to pick up power ups.
@@ -35,7 +36,6 @@ This document describes the functional and non-functional requirements of the ga
    1. Enemies shall become more difficult as the player’s stats should increase.
    1. The game shall have multiple enemy sprites
 1. Power-Ups
-   1. Power-ups shall drop randomly from enemy kills.
    1. Powerups must exist that are both passive and active.
 1. Player
    1. The Player’s stats shall increase as the player picks up more power-ups and progresses through the game. 
