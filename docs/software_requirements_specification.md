@@ -27,15 +27,15 @@ This document describes the functional and non-functional requirements of the ga
    1. Response time between user inputs and game reaction shall be less than .5 seconds.
    1. The game shall run on all major OS that supports Python.
    1. The game shall be created in a way that allows for easy functionality improvements and additions.
-2. Player Perspective
-   2. The game shall be viewed from the top down perspective.
-   2. The game shall contain a UI that outlines the state the player is currently in along with some information about the surrounding rooms and boss enemies.
-3. Enemies
-   3. Enemies shall path-find to the player.
-   3. Enemies shall become more difficult as the player’s stats should increase.
-   3. The game shall have multiple enemy sprites
-4. Power-Ups
-   4. Power-ups shall drop randomly from enemy kills.
-   4. Powerups must exist that are both passive and active.
-5. Player
-   5. The Player’s stats shall increase as the player picks up more power-ups and progresses through the game. 
+1. Player Perspective
+   1. The game shall be viewed from the top down perspective.
+   1. The game shall contain a UI that outlines the state the player is currently in along with some information about the surrounding rooms and boss enemies.
+1. Enemies
+   1. Enemies shall path-find to the player.
+   1. Enemies shall become more difficult as the player’s stats should increase.
+   1. The game shall have multiple enemy sprites
+1. Power-Ups
+  1. Power-ups shall drop randomly from enemy kills.
+  1. Powerups must exist that are both passive and active.
+1. Player
+ 1. The Player’s stats shall increase as the player picks up more power-ups and progresses through the game. 
