@@ -3,7 +3,7 @@ This document describes the functional and non-functional requirements of the ga
 
 # Functional Requirements
 1. Enemies
-  1. Enemies shall shoot projectiles at the player.
+ 1. Enemies shall shoot projectiles at the player.
   1. Enemies shall be injured when hit by player’s projectiles.
 2. Player
   2. The player shall not walk through obstacles.
