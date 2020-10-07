@@ -35,7 +35,7 @@ This document describes the functional and non-functional requirements of the ga
    1. Enemies shall become more difficult as the player’s stats should increase.
    1. The game shall have multiple enemy sprites
 1. Power-Ups
-  1. Power-ups shall drop randomly from enemy kills.
-  1. Powerups must exist that are both passive and active.
+   1. Power-ups shall drop randomly from enemy kills.
+   1. Powerups must exist that are both passive and active.
 1. Player
- 1. The Player’s stats shall increase as the player picks up more power-ups and progresses through the game. 
+   1. The Player’s stats shall increase as the player picks up more power-ups and progresses through the game. 
