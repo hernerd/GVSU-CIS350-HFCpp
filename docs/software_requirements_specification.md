@@ -1,5 +1,5 @@
 # Overview
-This document describes the functional and non-functional requirements of the game we are currently developing.
+This document describes the functional and non-functional requirements of the game we are currently developing. The game is intended to follow the game Binding of Issac’s gameplay mechanics. 
 
 # Functional Requirements
 1. Enemies
