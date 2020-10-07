@@ -2,6 +2,10 @@
 This document describes the functional and non-functional requirements of the game we are currently developing.
 
 # Functional Requirements
+1. This will actually show number 2
+ 1. This is 2.1
+ 1. and 2.2
+ 1. and 2.3 and so on
 1. Enemies
 * Enemies shall shoot projectiles at the player.
   1. Enemies shall be injured when hit by player’s projectiles.
