@@ -2,18 +2,14 @@
 This document describes the functional and non-functional requirements of the game we are currently developing.
 
 # Functional Requirements
-1. This will actually show number 2
- 1. This is 2.1
- 1. and 2.2
- 1. and 2.3 and so on
 1. Enemies
-* Enemies shall shoot projectiles at the player.
-  1. Enemies shall be injured when hit by player’s projectiles.
+ * Enemies shall shoot projectiles at the player.
+ * Enemies shall be injured when hit by player’s projectiles.
 2. Player
-  2. The player shall not walk through obstacles.
-  2. The player shall be able to pick up power ups.
-  2. The player shall lose health when touching enemies.
-  2. The player shall be able to move between rooms.
+ * The player shall not walk through obstacles.
+ * The player shall be able to pick up power ups.
+ * The player shall lose health when touching enemies.
+ * The player shall be able to move between rooms.
   2. The player shall be able to attack enemies.
   2. The player shall be able to shoot up, down, left, and right.
   2. The player shall be able to interact with the environment.
