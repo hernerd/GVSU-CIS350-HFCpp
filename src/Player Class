@@ -1,0 +1,14 @@
+class Player(pygame.sprite.Sprite):
+    def __init__(self, x_pos, y_pos):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(filepath, "assets/player.png")).convert_alpha()
+        self.x = x_pos
+        self.y = y_pos
+        self.rect = self.image.get_rect()
+        self.rect.center = [x_pos, y_pos]
+        self.mask = pygame.mask.from_surface(self.image)
+
+    def __pos__(self, x_pos, y_pos):
+        self.rect.center = [x_pos, y_pos]
+        self.x = x_pos
+        self.y = y_pos
