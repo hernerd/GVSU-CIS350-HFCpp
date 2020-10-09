@@ -105,7 +105,7 @@ def displayPowerUp(powerUp):
 def fire_bullet(x, y):
     global bullet_state
     bullet_state = "live"
-    screen.blit(bulletIcon, (x + 16, y + 10))
+    screen.blit(bulletIcon, (x-7, y-5))
 
 
 # Game running
@@ -132,19 +132,23 @@ while running:
             # Bullet Movement
             if bullet_state is "dead":
                 if event.key == pygame.K_UP:
-                    bulletX = playerX
+                    bulletX = player.x
+                    bulletY = player.y
                     direction_shot = "up"
                     fire_bullet(bulletX, bulletY)
                 if event.key == pygame.K_DOWN:
-                    bulletX = playerX
+                    bulletX = player.x
+                    bulletY = player.y
                     direction_shot = "down"
                     fire_bullet(bulletX, bulletY)
                 if event.key == pygame.K_LEFT:
-                    bulletX = playerX
+                    bulletX = player.x
+                    bulletY = player.y
                     direction_shot = "left"
                     fire_bullet(bulletX, bulletY)
                 if event.key == pygame.K_RIGHT:
-                    bulletX = playerX
+                    bulletX = player.x
+                    bulletY = player.y
                     direction_shot = "right"
                     fire_bullet(bulletX, bulletY)
 
@@ -191,7 +195,6 @@ while running:
 
     # Bullet Moving
     if bulletY <= 0 or bulletY >= 600 or bulletX <= 0 or bulletX >= 800:
-        bulletY = player.y
         bullet_state = "dead"
     if bullet_state is "live":
         fire_bullet(bulletX, bulletY)
