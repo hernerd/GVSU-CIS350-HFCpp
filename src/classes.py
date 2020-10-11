@@ -53,3 +53,20 @@ class Obstacle(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = [pos_x, pos_y]
         self.mask = pygame.mask.from_surface(self.image)
+
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.name = "bullet"
+        self.image = pygame.image.load(os.path.join(filepath, "assets/projectile.png")).convert_alpha()
+        self.x = x
+        self.y = y
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.direction = ""
+
+    def pos(self, x, y):
+        self.rect.center = [x, y]
+        self.x = x
+        self.y = y

@@ -3,7 +3,7 @@ import pygame
 import random
 
 from powerUp import MovementPowerUp
-from classes import Player, Enemy, Obstacle
+from classes import Player, Enemy, Obstacle, Bullet
 
 filepath = os.path.dirname(__file__)
 
@@ -80,17 +80,10 @@ def check_object_collision(self, obstacle):
             self.y_change = .3
             self.x_change = .3
 
-
-# Bullet
-#   Dead - bullet is not shot yet
-#   Live - bullet is in motion
-bulletIcon = pygame.image.load(os.path.join(filepath, "assets/projectile.png"))
-bulletX = 370
-bulletY = 480
-bulletX_change = 0
-bulletY_change = .5
-bullet_state = "dead"
+# Bullets
+bullets = []
 direction_shot = ""
+bullet_change = .5
 
 # Power-ups
 powerUpsOnScreen = [MovementPowerUp(random.randint(0, 800), random.randint(0, 600))]
@@ -103,9 +96,7 @@ def displayPowerUp(powerUp):
 
 
 def fire_bullet(x, y):
-    global bullet_state
-    bullet_state = "live"
-    screen.blit(bulletIcon, (x + 16, y + 10))
+    screen.blit(bullet.image, (x-7, y-5))
 
 
 # Game running
@@ -130,23 +121,35 @@ while running:
                 player.y_change = player.ySpeed
 
             # Bullet Movement
-            if bullet_state is "dead":
-                if event.key == pygame.K_UP:
-                    bulletX = playerX
-                    direction_shot = "up"
-                    fire_bullet(bulletX, bulletY)
-                if event.key == pygame.K_DOWN:
-                    bulletX = playerX
-                    direction_shot = "down"
-                    fire_bullet(bulletX, bulletY)
-                if event.key == pygame.K_LEFT:
-                    bulletX = playerX
-                    direction_shot = "left"
-                    fire_bullet(bulletX, bulletY)
-                if event.key == pygame.K_RIGHT:
-                    bulletX = playerX
-                    direction_shot = "right"
-                    fire_bullet(bulletX, bulletY)
+            # if bullet_state is "dead":
+            if event.key == pygame.K_UP:
+                bullet = Bullet(player.x, player.y)
+                bullet.direction = "up"
+                bullet.x = player.x
+                bullet.y = player.y
+                bullets.append(bullet)
+                # fire_bullet(bullet.x, bullet.y)
+            if event.key == pygame.K_DOWN:
+                bullet = Bullet(player.x, player.y)
+                bullet.direction = "down"
+                bullet.x = player.x
+                bullet.y = player.y
+                bullets.append(bullet)
+                # fire_bullet(bullet.x, bullet.y)
+            if event.key == pygame.K_LEFT:
+                bullet = Bullet(player.x, player.y)
+                bullet.direction = "left"
+                bullet.x = player.x
+                bullet.y = player.y
+                bullets.append(bullet)
+                # fire_bullet(bullet.x, bullet.y)
+            if event.key == pygame.K_RIGHT:
+                bullet = Bullet(player.x, player.y)
+                bullet.direction = "right"
+                bullet.x = player.x
+                bullet.y = player.y
+                bullets.append(bullet)
+                # fire_bullet(bullet.x, bullet.y)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
@@ -190,19 +193,18 @@ while running:
         running = False
 
     # Bullet Moving
-    if bulletY <= 0 or bulletY >= 600 or bulletX <= 0 or bulletX >= 800:
-        bulletY = player.y
-        bullet_state = "dead"
-    if bullet_state is "live":
-        fire_bullet(bulletX, bulletY)
-        if direction_shot is "up":
-            bulletY -= bulletY_change
-        if direction_shot is "down":
-            bulletY += bulletY_change
-        if direction_shot is "left":
-            bulletX -= bulletY_change
-        if direction_shot is "right":
-            bulletX += bulletY_change
+    for b in bullets:
+        fire_bullet(b.x, b.y)
+        if b.direction is "up":
+            b.y -= bullet_change
+        if b.direction is "down":
+            b.y += bullet_change
+        if b.direction is "left":
+            b.x -= bullet_change
+        if b.direction is "right":
+            b.x += bullet_change
+        if b.y <= 0 or b.y >= 600 or b.x <= 0 or b.x >= 800:
+            bullets.remove(b)
 
     # check player contacting powerUp
     for powerUp in powerUpsOnScreen:
