@@ -1,5 +1,6 @@
 import pygame
 import os.path
+from spritesheet import SpriteSheet
 
 filepath = os.path.dirname(__file__)
 
