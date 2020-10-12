@@ -84,6 +84,7 @@ def check_object_collision(self, obstacle):
 bullets = []
 direction_shot = ""
 bullet_change = .5
+bullet_group = pygame.sprite.Group()
 
 # Power-ups
 powerUpsOnScreen = [MovementPowerUp(random.randint(0, 800), random.randint(0, 600))]
@@ -194,7 +195,7 @@ while running:
 
     # Bullet Moving
     for b in bullets:
-        fire_bullet(b.x, b.y)
+        # fire_bullet(b.x, b.y)
         if b.direction is "up":
             b.y -= bullet_change
         if b.direction is "down":
@@ -203,6 +204,7 @@ while running:
             b.x -= bullet_change
         if b.direction is "right":
             b.x += bullet_change
+        b.pos(b.x, b.y)
         if b.y <= 0 or b.y >= 600 or b.x <= 0 or b.x >= 800:
             bullets.remove(b)
 
@@ -225,5 +227,5 @@ while running:
     enemy_group.draw(screen)
     obstacle_group.draw(screen)
     player_group.draw(screen)
-
+    bullet_group.draw(screen)
     pygame.display.update()
