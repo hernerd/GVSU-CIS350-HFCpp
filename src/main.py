@@ -26,11 +26,16 @@ crateY = 300
 crate = Obstacle(crateX, crateY)
 
 # Enemy
-enemyX = random.randint(0, 800)
-enemyY = random.randint(0, 600)
-enemy = Enemy(enemyX, enemyY)
-enemy.x_change = 0.3
-enemy.y_change = 0.1
+num_enemies = 10
+enemies = []
+
+for i in range(num_enemies):
+    enemyX = random.randint(0, 800)
+    enemyY = random.randint(0, 600)
+    enemy = Enemy(enemyX, enemyY)
+    enemy.x_change = 0.3
+    enemy.y_change = 0.1
+    enemies.append(enemy)
 
 # player group
 player_group = pygame.sprite.Group()
@@ -42,12 +47,14 @@ obstacle_group.add(crate)
 
 # enemy group
 enemy_group = pygame.sprite.Group()
-enemy_group.add(enemy)
+for e in enemies:
+    enemy_group.add(e)
 
 # mobile group (sprites that move)
 mobile_group = pygame.sprite.Group()
 mobile_group.add(player)
-mobile_group.add(enemy)
+for e in enemies:
+    mobile_group.add(e)
 
 
 def check_object_collision(self, obstacle):
@@ -82,6 +89,7 @@ def check_object_collision(self, obstacle):
 
 # Bullets
 bullets = []
+bullet_group = pygame.sprite.Group()
 direction_shot = ""
 bullet_change = .5
 
@@ -128,6 +136,8 @@ while running:
                 bullet.x = player.x
                 bullet.y = player.y
                 bullets.append(bullet)
+                bullet_group.add(bullet)
+
                 # fire_bullet(bullet.x, bullet.y)
             if event.key == pygame.K_DOWN:
                 bullet = Bullet(player.x, player.y)
@@ -135,6 +145,7 @@ while running:
                 bullet.x = player.x
                 bullet.y = player.y
                 bullets.append(bullet)
+                bullet_group.add(bullet)
                 # fire_bullet(bullet.x, bullet.y)
             if event.key == pygame.K_LEFT:
                 bullet = Bullet(player.x, player.y)
@@ -142,6 +153,8 @@ while running:
                 bullet.x = player.x
                 bullet.y = player.y
                 bullets.append(bullet)
+                bullet_group.add(bullet)
+
                 # fire_bullet(bullet.x, bullet.y)
             if event.key == pygame.K_RIGHT:
                 bullet = Bullet(player.x, player.y)
@@ -149,6 +162,8 @@ while running:
                 bullet.x = player.x
                 bullet.y = player.y
                 bullets.append(bullet)
+                bullet_group.add(bullet)
+
                 # fire_bullet(bullet.x, bullet.y)
 
         if event.type == pygame.KEYUP:
@@ -170,27 +185,35 @@ while running:
         player.y = 600
 
     # Enemy Movement
-    enemy.x += enemy.x_change
-    if enemy.x <= 0:
-        enemy.x_change = 0.3
-    elif enemy.x >= 760:
-        enemy.x_change = -0.3
+    for e in enemies:
+        e.x += e.x_change
+        if e.x <= 0:
+            e.x_change = 0.3
+        elif e.x >= 760:
+            e.x_change = -0.3
 
-    enemy.y += enemy.y_change
-    if enemy.y <= 0:
-        enemy.y_change = 0.1
-    elif enemy.y >= 560:
-        enemy.y_change = -0.1
+        e.y += e.y_change
+        if e.y <= 0:
+            e.y_change = 0.1
+        elif e.y >= 560:
+            e.y_change = -0.1
 
     for mob in mobile_group:
         check_object_collision(mob, crate)
 
-    enemy.pos(enemy.x, enemy.y)
+    for e in enemies:
+        e.pos(e.x, e.y)
     player.pos(player.x, player.y)
-
     # Checking Enemy Collisions
-    if pygame.sprite.collide_mask(player, enemy):
+    for e in enemies:
+     if pygame.sprite.collide_mask(player, e):
         running = False
+    
+    #problem child
+    for e in enemy_group:
+        for b in bullets:
+           if pygame.sprite.collide_rect(b, e):
+                print("hi")
 
     # Bullet Moving
     for b in bullets:
@@ -206,6 +229,7 @@ while running:
         if b.y <= 0 or b.y >= 600 or b.x <= 0 or b.x >= 800:
             bullets.remove(b)
 
+  
     # check player contacting powerUp
     for powerUp in powerUpsOnScreen:
         if powerUp.x - 24 <= player.x <= powerUp.x + 24 and powerUp.y - 24 <= player.y <= powerUp.y + 24:
