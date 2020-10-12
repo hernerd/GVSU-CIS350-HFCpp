@@ -211,10 +211,13 @@ while running:
         running = False
     
     #problem child
-    for e in enemy_group:
+    for e in enemies:
         for b in bullets:
            if pygame.sprite.collide_rect(b, e):
-                print("hi")
+                bullet_group.remove(b)
+                enemy_group.remove(e)
+                enemies.remove(e)
+                bullets.remove(b)
 
     # Bullet Moving
     for b in bullets:
@@ -229,7 +232,7 @@ while running:
             b.x += bullet_change
         b.pos(b.x, b.y)
         if b.y <= 0 or b.y >= 600 or b.x <= 0 or b.x >= 800:
-            bullets.remove(b)
+            bullet_group.remove(b)
 
   
     # check player contacting powerUp
