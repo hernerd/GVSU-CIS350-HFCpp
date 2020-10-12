@@ -30,7 +30,7 @@ y = 480
 # crate2 = Obstacle(300, 300)
 
 # Enemy
-num_enemies = 10
+num_enemies = 5
 enemies = []
 
 for i in range(num_enemies):
@@ -233,16 +233,20 @@ while running:
     # Checking Enemy Collisions
     for e in enemy_group:
         if pygame.sprite.collide_mask(player, e):
-            running = False
+            player.health -= e.damage
+            if player.health <= 0:
+                running = False
 
     # problem child
     for e in enemy_group:
         for b in bullet_group:
             if pygame.sprite.collide_rect(b, e):
+                e.health -= b.damage
+                if e.health <= 0:
+                    enemy_group.remove(e)
+                    enemies.remove(e)
                 bullet_group.remove(b)
                 bullets.remove(b)
-                enemy_group.remove(e)
-                enemies.remove(e)
 
     # check player contacting powerUp
     for powerUp in powerUpsOnScreen:
