@@ -5,19 +5,51 @@ filepath = os.path.dirname(__file__)
 
 
 class Player(pygame.sprite.Sprite):
+    images = []
+    moving = False
+
     def __init__(self, x_pos, y_pos):
         pygame.sprite.Sprite.__init__(self)
+        self.load_images()
         self.name = "player"
-        self.image = pygame.image.load(os.path.join(filepath, "assets/player.png")).convert_alpha()
+        self.image = self.images[0]
+        self.frame = 0
         self.x = x_pos
         self.y = y_pos
         self.rect = self.image.get_rect()
         self.rect.center = [x_pos, y_pos]
         self.mask = pygame.mask.from_surface(self.image)
-        self.xSpeed = 0.2
-        self.ySpeed = 0.2
+        self.xSpeed = 5
+        self.ySpeed = 5
         self.x_change = 0
         self.y_change = 0
+
+    def load_images(self):
+        i = 0
+        img_x = 0
+        img_y = 0
+        player_sheet = SpriteSheet("assets/player_spritesheet.png")
+        for i in range(9):
+            for j in range(5):
+                self.images.append(player_sheet.get_image(img_x, img_y, 50, 37))
+            img_x += 50
+            i += 1
+
+    def pos(self, x_pos, y_pos):
+        if not self.moving:
+            self.image = self.images[self.frame]
+            self.mask = pygame.mask.from_surface(self.image)
+            # print("Frames: ", self.frame)
+            self.frame += 1
+            if self.frame >= 45:
+                self.frame = 0
+        if self.moving:
+            self.image = self.images[0]
+            self.frame = 0
+            self.mask = pygame.mask.from_surface(self.image)
+        self.rect.center = [x_pos, y_pos]
+        self.x = x_pos
+        self.y = y_pos
 
     def pos(self, x_pos, y_pos):
         self.rect.center = [x_pos, y_pos]
