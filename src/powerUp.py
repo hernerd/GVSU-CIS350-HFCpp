@@ -26,12 +26,12 @@ class MovementPowerUp(PowerUp):
         )
 
     def applyPlayerEffect(self, player):
-        player.xSpeed *= 10
-        player.ySpeed *= 10
+        player.xSpeed *= 1.5
+        player.ySpeed *= 1.5
 
     def removePlayerEffectIfExpired(self, player):
         if datetime.now() > self.expirationTime:
-            player.xSpeed /= 10
-            player.ySpeed /= 10
+            player.xSpeed /= 1.5
+            player.ySpeed /= 1.5
             return True
         return False

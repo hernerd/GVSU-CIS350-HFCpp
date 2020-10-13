@@ -104,7 +104,8 @@ bullet_change = 5
 bullet_group = pygame.sprite.Group()
 
 # Power-ups
-powerUpsOnScreen = [MovementPowerUp(random.randint(0, 800), random.randint(0, 600))]
+powerUpsOnScreen = [MovementPowerUp(random.randint(0, 775), random.randint(0, 575)),
+                    MovementPowerUp(random.randint(0, 775), random.randint(0, 575))]
 powerUpsInEffect = []
 
 
@@ -116,6 +117,17 @@ def displayPowerUp(powerUp):
 def fire_bullet(x, y):
     screen.blit(bullet.image, (x-7, y-5))
 
+def updateUI():
+    # PowerUps in effect
+    numPowerUps = len(powerUpsInEffect)
+    if numPowerUps > 0:
+        pygame.draw.rect(screen, (0, 102, 102), [797 - (numPowerUps * 40), 557, (numPowerUps * 40), 40])
+
+        index = 0
+        for currentPowerUp in powerUpsInEffect:
+            image = pygame.image.load(os.path.join(filepath, currentPowerUp.imagePath))
+            screen.blit(image, (789 - (40 * index) - 24, 565))
+            index += 1
 
 FPS = 60
 clock = pygame.time.Clock()
@@ -268,4 +280,5 @@ while running:
     obstacle_group.draw(screen)
     player_group.draw(screen)
     bullet_group.draw(screen)
+    updateUI()
     pygame.display.update()
