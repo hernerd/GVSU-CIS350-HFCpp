@@ -128,13 +128,20 @@ def updateUI():
             image = pygame.image.load(os.path.join(filepath, currentPowerUp.imagePath))
             screen.blit(image, (789 - (40 * index) - 24, 565))
             index += 1
+            
+background = pygame.image.load(os.path.join(filepath, "assets/bg_0.png"))
+upper_bound = 70
+lower_bound = 525
+left_bound = 70
+right_bound = 730
 
 FPS = 60
 clock = pygame.time.Clock()
 # Game running
 running = True
 while running:
-    screen.fill((255, 255, 255))
+    # screen.fill((255, 255, 255))
+    screen.blit(background, (0, 0))
     clock.tick(FPS)
 
     for event in pygame.event.get():
@@ -196,44 +203,44 @@ while running:
                 player.moving = False
 
     player.x += player.x_change
-    if player.x <= 0:
-        player.x = 0
-    elif player.x >= 800:
-        player.x = 800
+    if player.x <= left_bound:
+        player.x = left_bound
+    elif player.x >= right_bound:
+        player.x = right_bound
 
     player.y += player.y_change
-    if player.y <= 0:
-        player.y = 0
-    elif player.y >= 600:
-        player.y = 600
+    if player.y <= upper_bound:
+        player.y = upper_bound
+    elif player.y >= lower_bound:
+        player.y = lower_bound
 
     # Enemy Movement
     for e in enemy_group:
         e.x += e.x_change
-        if e.x <= 0:
+        if e.x <= left_bound:
             e.x_change = 7
-        elif e.x >= 760:
+        elif e.x >= right_bound:
             e.x_change = -7
 
         e.y += e.y_change
-        if e.y <= 0:
+        if e.y <= upper_bound:
             e.y_change = 7
-        elif e.y >= 560:
+        elif e.y >= lower_bound:
             e.y_change = -7
 
     # Bullet Moving
     for b in bullets:
         # fire_bullet(b.x, b.y)
-        if b.direction is "up":
+        if b.direction == "up":
             b.y -= bullet_change
-        if b.direction is "down":
+        if b.direction == "down":
             b.y += bullet_change
-        if b.direction is "left":
+        if b.direction == "left":
             b.x -= bullet_change
-        if b.direction is "right":
+        if b.direction == "right":
             b.x += bullet_change
         b.pos(b.x, b.y)
-        if b.y <= 0 or b.y >= 600 or b.x <= 0 or b.x >= 800:
+        if b.y <= upper_bound or b.y >= lower_bound or b.x <= left_bound or b.x >= right_bound:
             bullets.remove(b)
             bullet_group.remove(b)
 
