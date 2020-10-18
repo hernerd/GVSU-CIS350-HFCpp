@@ -103,6 +103,11 @@ direction_shot = ""
 bullet_change = 5
 bullet_group = pygame.sprite.Group()
 
+#Bullet Delay
+count = 0
+bulletDelay = 25
+firstShot = True
+
 # Power-ups
 powerUpsOnScreen = [MovementPowerUp(random.randint(0, 775), random.randint(0, 575)),
                     MovementPowerUp(random.randint(0, 775), random.randint(0, 575))]
@@ -144,6 +149,7 @@ while running:
     screen.blit(background, (0, 0))
     clock.tick(FPS)
 
+    count += 1
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
@@ -162,37 +168,40 @@ while running:
 
             # Bullet Movement
             # if bullet_state is "dead":
-            if event.key == pygame.K_UP:
-                bullet = Bullet(player.x, player.y)
-                bullet.direction = "up"
-                bullet.x = player.x
-                bullet.y = player.y
-                bullets.append(bullet)
-                bullet_group.add(bullet)
-                # fire_bullet(bullet.x, bullet.y)
-            if event.key == pygame.K_DOWN:
-                bullet = Bullet(player.x, player.y)
-                bullet.direction = "down"
-                bullet.x = player.x
-                bullet.y = player.y
-                bullets.append(bullet)
-                bullet_group.add(bullet)
-                # fire_bullet(bullet.x, bullet.y)
-            if event.key == pygame.K_LEFT:
-                bullet = Bullet(player.x, player.y)
-                bullet.direction = "left"
-                bullet.x = player.x
-                bullet.y = player.y
-                bullets.append(bullet)
-                bullet_group.add(bullet)
-                # fire_bullet(bullet.x, bullet.y)
-            if event.key == pygame.K_RIGHT:
-                bullet = Bullet(player.x, player.y)
-                bullet.direction = "right"
-                bullet.x = player.x
-                bullet.y = player.y
-                bullets.append(bullet)
-                bullet_group.add(bullet)
+            if count > bulletDelay or firstShot:
+                count = 0
+                firstShot = False
+                if event.key == pygame.K_UP:
+                    bullet = Bullet(player.x, player.y)
+                    bullet.direction = "up"
+                    bullet.x = player.x
+                    bullet.y = player.y
+                    bullets.append(bullet)
+                    bullet_group.add(bullet)
+                    # fire_bullet(bullet.x, bullet.y)
+                if event.key == pygame.K_DOWN:
+                    bullet = Bullet(player.x, player.y)
+                    bullet.direction = "down"
+                    bullet.x = player.x
+                    bullet.y = player.y
+                    bullets.append(bullet)
+                    bullet_group.add(bullet)
+                    # fire_bullet(bullet.x, bullet.y)
+                if event.key == pygame.K_LEFT:
+                    bullet = Bullet(player.x, player.y)
+                    bullet.direction = "left"
+                    bullet.x = player.x
+                    bullet.y = player.y
+                    bullets.append(bullet)
+                    bullet_group.add(bullet)
+                    # fire_bullet(bullet.x, bullet.y)
+                if event.key == pygame.K_RIGHT:
+                    bullet = Bullet(player.x, player.y)
+                    bullet.direction = "right"
+                    bullet.x = player.x
+                    bullet.y = player.y
+                    bullets.append(bullet)
+                    bullet_group.add(bullet)
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
