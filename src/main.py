@@ -36,7 +36,7 @@ enemies = []
 
 for i in range(num_enemies):
     enemyX = random.randint(0, 800)
-    enemyY = random.randint(0, 600)
+    enemyY = random.randint(0, 300)
     enemy = Enemy(enemyX, enemyY)
     enemy.x_change = 0.3
     enemy.y_change = 0.1
@@ -133,7 +133,6 @@ def updateUI():
     pygame.draw.rect(screen, (92, 64, 51), [3, 557, numHearts * 40, 40])
 
     for index in range(0, numHearts):
-        print("index: " + str(index))
         heartImage = pygame.image.load(os.path.join(filepath, "assets/heart.png"))
         screen.blit(heartImage, (11 + (40 * index), 565))
 
@@ -238,18 +237,25 @@ while running:
         player.y = lower_bound
 
     # Enemy Movement
-    for e in enemy_group:
-        e.x += e.x_change
-        if e.x <= left_bound:
-            e.x_change = 7
-        elif e.x >= right_bound:
-            e.x_change = -7
+    # for e in enemy_group:
+    #     e.x += e.x_change
+    #     if e.x <= 0:
+    #         e.x_change = 7
+    #     elif e.x >= 760:
+    #         e.x_change = -7
 
-        e.y += e.y_change
-        if e.y <= upper_bound:
-            e.y_change = 7
-        elif e.y >= lower_bound:
-            e.y_change = -7
+    #     e.y += e.y_change
+    #     if e.y <= 0:
+    #         e.y_change = 7
+    #     elif e.y >= 560:
+    #         e.y_change = -7
+
+    for e in enemy_group:
+        dx, dy = player.x - e.x, player.y - e.y
+        dist = math.hypot(dx, dy)
+        dx, dy = dx/dist, dy/dist
+        e.x += dx
+        e.y += dy
 
     # Bullet Moving
     for b in bullets:
