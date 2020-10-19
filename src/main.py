@@ -1,6 +1,7 @@
 import os.path
 import pygame
 import random
+import math
 from powerUp import MovementPowerUp
 from classes import Player, Enemy, Obstacle, Bullet
 
@@ -35,7 +36,7 @@ enemies = []
 
 for i in range(num_enemies):
     enemyX = random.randint(0, 800)
-    enemyY = random.randint(0, 600)
+    enemyY = random.randint(0, 300)
     enemy = Enemy(enemyX, enemyY)
     enemy.x_change = 0.3
     enemy.y_change = 0.1
@@ -208,18 +209,25 @@ while running:
         player.y = 600
 
     # Enemy Movement
-    for e in enemy_group:
-        e.x += e.x_change
-        if e.x <= 0:
-            e.x_change = 7
-        elif e.x >= 760:
-            e.x_change = -7
+    # for e in enemy_group:
+    #     e.x += e.x_change
+    #     if e.x <= 0:
+    #         e.x_change = 7
+    #     elif e.x >= 760:
+    #         e.x_change = -7
 
-        e.y += e.y_change
-        if e.y <= 0:
-            e.y_change = 7
-        elif e.y >= 560:
-            e.y_change = -7
+    #     e.y += e.y_change
+    #     if e.y <= 0:
+    #         e.y_change = 7
+    #     elif e.y >= 560:
+    #         e.y_change = -7
+
+    for e in enemy_group:
+        dx, dy = player.x - e.x, player.y - e.y
+        dist = math.hypot(dx, dy)
+        dx, dy = dx/dist, dy/dist
+        e.x += dx
+        e.y += dy
 
     # Bullet Moving
     for b in bullets:
