@@ -88,8 +88,24 @@ class Obstacle(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):
         pygame.sprite.Sprite.__init__(self)
         self.image = pygame.image.load(os.path.join(filepath, "assets/crate.png")).convert_alpha()
+        self.name = "obstacle"
+        self.type = "obstacle"
         self.x = pos_x
         self.y = pos_y
+        self.rect = self.image.get_rect()
+        self.rect.center = [pos_x, pos_y]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.damage = 0
+
+        
+class Trap(Obstacle):
+    def __init__(self, pos_x, pos_y, obst_type):
+        super().__init__(pos_x, pos_y)
+        if obst_type == "spikes":
+            self.image = pygame.image.load(os.path.join(filepath, "assets/spikes.png")).convert_alpha()
+            self.name = "spikes"
+            self.damage = 2
+        self.type = "trap"
         self.rect = self.image.get_rect()
         self.rect.center = [pos_x, pos_y]
         self.mask = pygame.mask.from_surface(self.image)
