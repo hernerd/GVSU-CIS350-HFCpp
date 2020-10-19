@@ -294,6 +294,14 @@ while running:
     for mob in mobile_group:
         for obstacle in obstacle_group:
             check_object_collision(mob, obstacle)
+            if pygame.sprite.collide_mask(mob, obstacle) and obstacle.type == "trap":
+                mob.health -= obstacle.damage
+                if mob.health <= 0:
+                    mobile_group.remove(mob)
+                    if mob.name == "player":
+                        player_group.remove(mob)
+                    elif mob.name == "enemy":
+                        enemy_group.remove(mob)
         mob.pos(mob.x, mob.y)
 
     # Checking Enemy Collisions
