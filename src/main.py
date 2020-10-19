@@ -1,7 +1,8 @@
+import math
 import os.path
 import pygame
 import random
-from powerUp import MovementPowerUp
+from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp
 from classes import Player, Enemy, Obstacle, Bullet
 
 filepath = os.path.dirname(__file__)
@@ -109,8 +110,12 @@ bulletDelay = 25
 firstShot = True
 
 # Power-ups
-powerUpsOnScreen = [MovementPowerUp(random.randint(0, 775), random.randint(0, 575)),
-                    MovementPowerUp(random.randint(0, 775), random.randint(0, 575))]
+powerUpsOnScreen = [MovementPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    MovementPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    PortalPowerUp(random.randint(70, 730), random.randint(70, 525))]
 powerUpsInEffect = []
 
 
@@ -123,10 +128,19 @@ def fire_bullet(x, y):
     screen.blit(bullet.image, (x-7, y-5))
 
 def updateUI():
+    # current health
+    numHearts = math.ceil(player.health / 10.0)
+    pygame.draw.rect(screen, (92, 64, 51), [3, 557, numHearts * 40, 40])
+
+    for index in range(0, numHearts):
+        print("index: " + str(index))
+        heartImage = pygame.image.load(os.path.join(filepath, "assets/heart.png"))
+        screen.blit(heartImage, (11 + (40 * index), 565))
+
     # PowerUps in effect
     numPowerUps = len(powerUpsInEffect)
     if numPowerUps > 0:
-        pygame.draw.rect(screen, (0, 102, 102), [797 - (numPowerUps * 40), 557, (numPowerUps * 40), 40])
+        pygame.draw.rect(screen, (92, 64, 51), [797 - (numPowerUps * 40), 557, (numPowerUps * 40), 40])
 
         index = 0
         for currentPowerUp in powerUpsInEffect:
