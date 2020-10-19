@@ -113,6 +113,7 @@ class Trap(Obstacle):
 
 class Bullet(pygame.sprite.Sprite):
     images = []
+    moving = True
 
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -137,12 +138,15 @@ class Bullet(pygame.sprite.Sprite):
             for j in range(10):
                 self.images.append(bullet_sheet.get_image(img_x, img_y, 16, 16))
             img_x += 16
+        for i in range(20):
+            self.images[i] = pygame.transform.smoothscale(self.images[i], (8, 8))
 
     def pos(self, x, y):
         if self.frame >= 20:
             self.frame = 0
-        self.image = self.images[self.frame]
-        self.frame += 1
+        if self.moving:
+            self.image = self.images[self.frame]
+            self.frame += 1
         self.rect.center = [x, y]
         self.x = x
         self.y = y
