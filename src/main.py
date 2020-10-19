@@ -3,7 +3,7 @@ import os.path
 import pygame
 import random
 from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp
-from classes import Player, Enemy, Obstacle, Bullet
+from classes import Player, Enemy, Obstacle, Bullet, Trap
 
 filepath = os.path.dirname(__file__)
 
@@ -26,9 +26,9 @@ crateX = 400
 crateY = 300
 crates = []
 crate1 = Obstacle(crateX, crateY)
+spikes = Trap(80, 80, "spikes")
 x = 300
 y = 480
-# crate2 = Obstacle(300, 300)
 
 # Enemy
 num_enemies = 5
@@ -49,11 +49,19 @@ player_group.add(player)
 # obstacle group
 obstacle_group = pygame.sprite.Group()
 obstacle_group.add(crate1)
+obstacle_group.add(spikes)
 for i in range(6):
     crate = Obstacle(x, y)
     crates.append(crate)
     obstacle_group.add(crate)
     y -= 16
+    
+# trap group
+traps = pygame.sprite.Group()
+traps.add(spikes)
+
+# lingering image group
+lingering_image = pygame.sprite.Group()
 
 # enemy group
 enemy_group = pygame.sprite.Group()
@@ -68,7 +76,7 @@ for e in enemies:
 
 
 def check_object_collision(self, obstacle):
-    if pygame.sprite.collide_mask(self, obstacle):
+    if pygame.sprite.collide_mask(self, obstacle) and obstacle.name == "obstacle":
         if self.x_change < 0:
             while pygame.sprite.collide_mask(self, obstacle):
                 self.x_change = .1
@@ -272,6 +280,16 @@ while running:
         if b.y <= upper_bound or b.y >= lower_bound or b.x <= left_bound or b.x >= right_bound:
             bullets.remove(b)
             bullet_group.remove(b)
+            
+    for b in bullet_group:
+        for o in obstacle_group:
+            if pygame.sprite.collide_rect(b, o):
+                bullet_group.remove(b)
+                lingering_image.add(b)
+                b.direction = ""
+                b.moving = False
+                b.damage = 0
+                
 
     for mob in mobile_group:
         for obstacle in obstacle_group:
@@ -284,7 +302,14 @@ while running:
             player.health -= e.damage
             if player.health <= 0:
                 running = False
-
+                
+    # lingering images
+    lingering_count = 0
+    for image in lingering_image:
+        if lingering_count < 6 and len(lingering_image) > 6:
+            lingering_image.remove(image)
+        lingering_count += 1
+        
     # problem child
     for e in enemy_group:
         for b in bullet_group:
