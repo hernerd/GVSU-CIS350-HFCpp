@@ -110,7 +110,6 @@ class Trap(Obstacle):
         self.rect.center = [pos_x, pos_y]
         self.mask = pygame.mask.from_surface(self.image)
 
-
 class Bullet(pygame.sprite.Sprite):
     images = []
     moving = True
@@ -134,6 +133,46 @@ class Bullet(pygame.sprite.Sprite):
         img_x = 0
         img_y = 0
         bullet_sheet = SpriteSheet("assets/projectile_spritesheet.png")
+        for i in range(2):
+            for j in range(10):
+                self.images.append(bullet_sheet.get_image(img_x, img_y, 16, 16))
+            img_x += 16
+        for i in range(20):
+            self.images[i] = pygame.transform.smoothscale(self.images[i], (8, 8))
+
+    def pos(self, x, y):
+        if self.frame >= 20:
+            self.frame = 0
+        if self.moving:
+            self.image = self.images[self.frame]
+            self.frame += 1
+        self.rect.center = [x, y]
+        self.x = x
+        self.y = y
+
+class Fire(pygame.sprite.Sprite):
+    images = []
+    moving = True
+
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.load_images()
+        self.name = "fire"
+        # self.image = pygame.image.load(os.path.join(filepath, "assets/projectile.png")).convert_alpha()
+        self.image = self.images[0]
+        self.frame = 0
+        self.x = x
+        self.y = y
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.direction = ""
+        self.damage = 5
+
+    def load_images(self):
+        img_x = 0
+        img_y = 0
+        bullet_sheet = SpriteSheet("assets/fire_spritesheet.png")
         for i in range(2):
             for j in range(10):
                 self.images.append(bullet_sheet.get_image(img_x, img_y, 16, 16))
