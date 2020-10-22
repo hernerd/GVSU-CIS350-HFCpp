@@ -114,9 +114,8 @@ bullet_group = pygame.sprite.Group()
 bullet_type = "bullet"
 
 #Bullet Delay
-count = 0
 bulletDelay = 25
-firstShot = True
+count = bulletDelay
 
 # Power-ups
 powerUpsOnScreen = [MovementPowerUp(random.randint(70, 730), random.randint(70, 525)),
@@ -195,9 +194,8 @@ while running:
                 elif bullet_type == "fire":
                     bullet_type = "bullet"
             # Bullet Movement
-            if count > bulletDelay or firstShot or bullet_type == "fire":
+            if count > bulletDelay or bullet_type == "fire":
                 count = 0
-                firstShot = False
                 if bullet_type == "fire":
                     bullet = Fire(player.x, player.y)
                 else:
