@@ -3,7 +3,7 @@ import os.path
 import pygame
 import random
 from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp
-from classes import Player, Enemy, Obstacle, Bullet, Trap, Fire, Tank, Ninja
+from classes import Player, Enemy, Obstacle, Bullet, Trap, Fire, Tank, Ninja, Door
 
 filepath = os.path.dirname(__file__)
 
@@ -75,6 +75,11 @@ for i in range(6):
     crates.append(crate)
     obstacle_group.add(crate)
     y -= 16
+    
+door = Door(342, 60)
+door_group = pygame.sprite.Group()
+door_group.add(door)
+dframe = 0    
     
 # trap group
 traps = pygame.sprite.Group()
@@ -216,7 +221,18 @@ def updateUI():
             image = pygame.image.load(os.path.join(filepath, currentPowerUp.imagePath))
             screen.blit(image, (789 - (40 * index) - 24, 565))
             index += 1
-            
+         
+def start():
+    begin = True
+    while begin:
+        screen.blit(starting_image, (0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                quit()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                begin = False
+        pygame.display.update()        
+        
 background = pygame.image.load(os.path.join(filepath, "assets/bg_0.png"))
 upper_bound = 70
 lower_bound = 525
@@ -226,6 +242,7 @@ right_bound = 730
 FPS = 60
 clock = pygame.time.Clock()
 # Game running
+start()
 running = True
 while running:
     # screen.fill((255, 255, 255))
@@ -422,6 +439,16 @@ while running:
     for powerUp in powerUpsInEffect:
         if powerUp.removePlayerEffectIfExpired(player):
             powerUpsInEffect.remove(powerUp)
+            
+    screen.blit(door.images[dframe], (342, 0))
+    if len(enemy_group) == 0 and dframe == 0:
+        screen.blit(door.images[dframe], (342, 0))
+        dframe += 1
+    elif dframe == 1:
+        screen.blit(door.images[dframe], (342, 0))
+        dframe += 1
+    elif dframe == 2:
+        screen.blit(door.images[dframe], (342, 0))
 
     enemy_group.draw(screen)
     obstacle_group.draw(screen)
