@@ -3,7 +3,7 @@ import os.path
 import pygame
 import random
 from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp
-from classes import Player, Enemy, Obstacle, Bullet, Trap, Fire
+from classes import Player, Enemy, Obstacle, Bullet, Trap, Fire, Tank, Ninja
 
 filepath = os.path.dirname(__file__)
 
@@ -31,7 +31,7 @@ x = 300
 y = 480
 
 # Enemy
-num_enemies = 5
+num_enemies = 3
 enemies = []
 
 for i in range(num_enemies):
@@ -41,6 +41,26 @@ for i in range(num_enemies):
     enemy.x_change = 0.3
     enemy.y_change = 0.1
     enemies.append(enemy)
+
+num_tanks = 2
+
+for i in range(num_tanks):
+    tankX = random.randint(0, 800)
+    tankY = random.randint(0, 300)
+    tank = Tank(tankX, tankY)
+    tank.x_change = 0.2
+    tank.y_change = 0.05
+    enemies.append(tank)
+
+num_ninjas = 2
+
+for i in range(num_ninjas):
+    ninjaX = random.randint(0, 800)
+    ninjaY = random.randint(0, 300)
+    ninja = Ninja(ninjaX, ninjaY)
+    ninja.x_change = 0.4
+    ninja.y_change = 0.2
+    enemies.append(ninja)
 
 # player group
 player_group = pygame.sprite.Group()
@@ -102,6 +122,48 @@ def check_object_collision(self, obstacle):
                 self.pos(self.x, self.y)
             self.y_change = 0
         if self.name == "enemy":
+            self.y_change = 10
+            self.x_change = 10
+        if self.name == "tank":
+            self.y_change = 10
+            self.x_change = 10
+        if self.name == "ninja":
+            self.y_change = 10
+            self.x_change = 10
+
+def check_enemy_collision(self, enemy):
+    if pygame.sprite.collide_mask(self, enemy):
+        if self.x_change < 0:
+            while pygame.sprite.collide_mask(self, enemy):
+                self.x_change = .1
+                self.x += self.x_change
+                self.pos(self.x, self.y)
+            self.x_change = 0
+        elif self.x_change > 0:
+            while pygame.sprite.collide_mask(self, enemy):
+                self.x_change = -.1
+                self.x += self.x_change
+                self.pos(self.x, self.y)
+            self.x_change = 0
+        if self.y_change < 0:
+            while pygame.sprite.collide_mask(self, enemy):
+                self.y_change = .1
+                self.y += self.y_change
+                self.pos(self.x, self.y)
+            self.y_change = 0
+        elif self.y_change > 0:
+            while pygame.sprite.collide_mask(self, enemy):
+                self.y_change = -.1
+                self.y += self.y_change
+                self.pos(self.x, self.y)
+            self.y_change = 0
+        if self.name == "enemy":
+            self.y_change = 10
+            self.x_change = 10
+        if self.name == "tank":
+            self.y_change = 10
+            self.x_change = 10
+        if self.name == "ninja":
             self.y_change = 10
             self.x_change = 10
 
@@ -257,8 +319,20 @@ while running:
         dx, dy = player.x - e.x, player.y - e.y
         dist = math.hypot(dx, dy)
         dx, dy = dx/dist, dy/dist
-        e.x += dx
-        e.y += dy
+        if e.name == "enemy":
+            e.x += dx
+            e.y += dy
+        if e.name == "tank":
+            e.x += dx * 0.5
+            e.y += dy * 0.5
+        if e.name == "ninja":
+            e.x += dx * 1.5
+            e.y += dy * 1.5
+            tp = random.randint(0, 500)
+            if tp % 500 == 0:
+                e.x = random.randint(70, 730)
+                e.y = random.randint(70, 525)
+            
 
     # Bullet Moving
     for b in bullets:
@@ -285,7 +359,12 @@ while running:
                 b.moving = False
                 b.damage = 0
                 
-
+    for e1 in enemy_group:
+        for e2 in enemy_group:
+            if e1 != e2:
+                check_enemy_collision(e1, e2)
+                e1.pos(e1.x, e1.y)
+                e2.pos(e2.x, e2.y)
     for mob in mobile_group:
         for obstacle in obstacle_group:
             check_object_collision(mob, obstacle)
@@ -297,6 +376,10 @@ while running:
                         player_group.remove(mob)
                     elif mob.name == "enemy":
                         enemy_group.remove(mob)
+                    elif mob.name == "tank":
+                        enemy_group.remove(mob)
+                    elif mob.name == "ninja":
+                        enemy_group.remove(mob)                       
         mob.pos(mob.x, mob.y)
 
     # Checking Enemy Collisions
@@ -313,7 +396,7 @@ while running:
             lingering_image.remove(image)
         lingering_count += 1
         
-    # problem child
+    # Killing Enemies 
     for e in enemy_group:
         for b in bullet_group:
             if pygame.sprite.collide_rect(b, e):

@@ -83,6 +83,46 @@ class Enemy(pygame.sprite.Sprite):
         self.x = x
         self.y = y
 
+class Tank(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.name = "tank"
+        self.image = pygame.image.load(os.path.join(filepath, "assets/tank.png")).convert_alpha()
+        self.x = x
+        self.y = y
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.x_change = 1
+        self.y_change = 1
+        self.health = 20
+        self.damage = 20
+
+    def pos(self, x, y):
+        self.rect.center = [x, y]
+        self.x = x
+        self.y = y
+
+class Ninja(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.name = "ninja"
+        self.image = pygame.image.load(os.path.join(filepath, "assets/ninja.png")).convert_alpha()
+        self.x = x
+        self.y = y
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.x_change = 15
+        self.y_change = 15
+        self.health = 5
+        self.damage = 5
+
+    def pos(self, x, y):
+        self.rect.center = [x, y]
+        self.x = x
+        self.y = y
+
 
 class Obstacle(pygame.sprite.Sprite):
     def __init__(self, pos_x, pos_y):

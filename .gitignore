@@ -2,3 +2,4 @@
 venv/
 src/venv/
 src/__pycache__
+.vscode
