@@ -232,7 +232,8 @@ def start():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 begin = False
         pygame.display.update()        
-        
+     
+starting_image = pygame.image.load(os.path.join(filepath, "assets/bg_s0.png"))    
 background = pygame.image.load(os.path.join(filepath, "assets/bg_0.png"))
 upper_bound = 70
 lower_bound = 525
