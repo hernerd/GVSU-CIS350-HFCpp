@@ -149,7 +149,28 @@ class Trap(Obstacle):
         self.rect = self.image.get_rect()
         self.rect.center = [pos_x, pos_y]
         self.mask = pygame.mask.from_surface(self.image)
+        
+        
+class Door(pygame.sprite.Sprite):
+    images = []
+    frame = 0
 
+    def __init__(self, pos_x, pos_y):
+        super().__init__()
+        self.load_images()
+        self.image = self.images[0]
+        self.x = pos_x
+        self.y = pos_y
+        self.rect = self.image.get_rect
+
+    def load_images(self):
+        door = SpriteSheet("assets/door.png")
+        dx = 0
+        for i in range(3):
+            self.images.append(door.get_image(dx, 0, 116, 60))
+            dx += 116
+
+            
 class Bullet(pygame.sprite.Sprite):
     images = []
     moving = True
