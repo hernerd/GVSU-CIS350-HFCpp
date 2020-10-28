@@ -7,9 +7,12 @@ from classes import Enemy, Ninja, Tank, Obstacle, Trap
 
 filepath = os.path.dirname(__file__)
 
+<<<<<<< HEAD
 # level = 0
 # mobile_group = pygame.sprite.Group()
 
+=======
+>>>>>>> f4e302a00df07ca13c006625132671c1916ddb67
 
 class Room:
     difficulty = "normal"
