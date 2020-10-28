@@ -161,7 +161,9 @@ class Door(pygame.sprite.Sprite):
         self.image = self.images[0]
         self.x = pos_x
         self.y = pos_y
-        self.rect = self.image.get_rect
+        self.rect = self.image.get_rect()
+        self.rect.center = [pos_x, pos_y]
+        self.mask = pygame.mask.from_surface(self.image)
 
     def load_images(self):
         door = SpriteSheet("assets/door.png")
@@ -169,6 +171,18 @@ class Door(pygame.sprite.Sprite):
         for i in range(3):
             self.images.append(door.get_image(dx, 0, 116, 60))
             dx += 116
+
+    def updateImage(self):
+        self.frame += 1
+        self.image = self.images[self.frame]
+        self.rect.center = [self.x, self.y]
+        self.mask = pygame.mask.from_surface(self.image)
+
+    def reset_image(self):
+        self.frame = 0
+        self.image = self.images[self.frame]
+        self.rect.center = [self.x, self.y]
+        self.mask = pygame.mask.from_surface(self.image)
 
             
 class Bullet(pygame.sprite.Sprite):
