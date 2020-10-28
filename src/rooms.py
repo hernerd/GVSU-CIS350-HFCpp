@@ -7,9 +7,6 @@ from classes import Enemy, Ninja, Tank, Obstacle, Trap
 
 filepath = os.path.dirname(__file__)
 
-screen = pygame.display.set_mode((800, 600))
-background = pygame.image.load(os.path.join(filepath, "assets/backgrounds/bg_0.png"))
-
 # level = 0
 # mobile_group = pygame.sprite.Group()
 
