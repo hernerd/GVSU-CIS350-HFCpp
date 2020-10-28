@@ -248,7 +248,7 @@ def make_room(lvl):
 
 starting_image = pygame.image.load(os.path.join(filepath, "assets/bg_s0.png"))    
 background = pygame.image.load(os.path.join(filepath, "assets/bg_0.png"))
-upper_bound = 70
+upper_bound = 54
 lower_bound = 525
 left_bound = 70
 right_bound = 730
