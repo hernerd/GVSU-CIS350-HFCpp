@@ -4,6 +4,7 @@ import pygame
 import random
 from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp
 from classes import Player, Enemy, Obstacle, Bullet, Trap, Fire, Tank, Ninja, Door
+from rooms import Room
 
 filepath = os.path.dirname(__file__)
 
@@ -31,12 +32,14 @@ x = 300
 y = 480
 
 # Enemy
-num_enemies = 3
+enemies = []
+"""
+num_enemies = 5
 enemies = []
 
 for i in range(num_enemies):
     enemyX = random.randint(0, 800)
-    enemyY = random.randint(0, 300)
+    enemyY = random.randint(0, 600)
     enemy = Enemy(enemyX, enemyY)
     enemy.x_change = 0.3
     enemy.y_change = 0.1
@@ -61,43 +64,48 @@ for i in range(num_ninjas):
     ninja.x_change = 0.4
     ninja.y_change = 0.2
     enemies.append(ninja)
-
+"""
 # player group
 player_group = pygame.sprite.Group()
 player_group.add(player)
 
 # obstacle group
-obstacle_group = pygame.sprite.Group()
-obstacle_group.add(crate1)
-obstacle_group.add(spikes)
+"""
+spikes = Trap(80, 80, "spikes")
 for i in range(6):
     crate = Obstacle(x, y)
     crates.append(crate)
     obstacle_group.add(crate)
     y -= 16
-    
-door = Door(342, 60)
-door_group = pygame.sprite.Group()
-door_group.add(door)
-dframe = 0    
-    
-# trap group
+
 traps = pygame.sprite.Group()
 traps.add(spikes)
+obstacle_group.add(spikes)
+"""
+door = Door(400, 30)
+door_group = pygame.sprite.Group()
+door_group.add(door)
+dframe = 0
 
 # lingering image group
 lingering_image = pygame.sprite.Group()
 
 # enemy group
+"""
+# enemy group
 enemy_group = pygame.sprite.Group()
 for e in enemies:
     enemy_group.add(e)
+"""
+enemy_group = pygame.sprite.Group()
 
 # mobile group (sprites that move)
 mobile_group = pygame.sprite.Group()
 mobile_group.add(player)
+"""
 for e in enemies:
     mobile_group.add(e)
+"""
 
 
 def check_object_collision(self, obstacle):
@@ -233,6 +241,11 @@ def start():
                 begin = False
         pygame.display.update()        
      
+def make_room(lvl):
+    r = Room(lvl)
+    return r
+
+
 starting_image = pygame.image.load(os.path.join(filepath, "assets/bg_s0.png"))    
 background = pygame.image.load(os.path.join(filepath, "assets/bg_0.png"))
 upper_bound = 70
@@ -242,13 +255,25 @@ right_bound = 730
 
 FPS = 60
 clock = pygame.time.Clock()
+level = 0
+room = None
+rooms = []
 # Game running
 start()
 running = True
 while running:
+    clock.tick(FPS)
     # screen.fill((255, 255, 255))
     screen.blit(background, (0, 0))
-    clock.tick(FPS)
+    if room is None:
+        room = make_room(level)
+        rooms.append(room)
+        enemy_group = room.enemy_group
+        obstacle_group = room.obstacle_group
+        # print(level)
+        for e in enemy_group:
+            enemies.append(e)
+            mobile_group.add(e)
 
     count += 1
     for event in pygame.event.get():
@@ -372,10 +397,11 @@ while running:
         for o in obstacle_group:
             if pygame.sprite.collide_rect(b, o):
                 bullet_group.remove(b)
-                lingering_image.add(b)
-                b.direction = ""
-                b.moving = False
-                b.damage = 0
+                if b.name != "fire":
+                    lingering_image.add(b)
+                    b.direction = ""
+                    b.moving = False
+                    b.damage = 0
                 
     for e1 in enemy_group:
         for e2 in enemy_group:
@@ -383,6 +409,7 @@ while running:
                 check_enemy_collision(e1, e2)
                 e1.pos(e1.x, e1.y)
                 e2.pos(e2.x, e2.y)
+                
     for mob in mobile_group:
         for obstacle in obstacle_group:
             check_object_collision(mob, obstacle)
@@ -441,18 +468,21 @@ while running:
         if powerUp.removePlayerEffectIfExpired(player):
             powerUpsInEffect.remove(powerUp)
             
-    screen.blit(door.images[dframe], (342, 0))
-    if len(enemy_group) == 0 and dframe == 0:
-        screen.blit(door.images[dframe], (342, 0))
+    if len(enemy_group) == 0 and dframe < 2:
+        door.updateImage()
         dframe += 1
-    elif dframe == 1:
-        screen.blit(door.images[dframe], (342, 0))
-        dframe += 1
-    elif dframe == 2:
-        screen.blit(door.images[dframe], (342, 0))
+            
+    if dframe == 2 and pygame.sprite.collide_mask(player, door):
+        room = None
+        level += 1
+        dframe = 0
+        door.reset_image()
+        player.x = playerX
+        player.y = playerY
 
     enemy_group.draw(screen)
     obstacle_group.draw(screen)
+    door_group.draw(screen)
     player_group.draw(screen)
     bullet_group.draw(screen)
     updateUI()
