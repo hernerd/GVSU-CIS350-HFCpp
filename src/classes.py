@@ -24,6 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(self.image)
         self.xSpeed = 5
         self.ySpeed = 5
+        self.bullet = "bullet"
         self.x_change = 0
         self.y_change = 0
         self.health = 100

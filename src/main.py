@@ -2,7 +2,7 @@ import math
 import os.path
 import pygame
 import random
-from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp
+from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp, FirePowerUp
 from classes import Player, Enemy, Obstacle, Bullet, Trap, Fire, Tank, Ninja, Door
 from rooms import Room
 
@@ -186,7 +186,7 @@ bullets = []
 direction_shot = ""
 bullet_change = 5
 bullet_group = pygame.sprite.Group()
-bullet_type = "bullet"
+# bullet_type = "bullet"
 
 #Bullet Delay
 bulletDelay = 25
@@ -198,7 +198,9 @@ powerUpsOnScreen = [MovementPowerUp(random.randint(70, 730), random.randint(70, 
                     HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
                     HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
                     HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
-                    PortalPowerUp(random.randint(70, 730), random.randint(70, 525))]
+                    PortalPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    FirePowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    FirePowerUp(random.randint(70, 730), random.randint(70, 525)),]
 powerUpsInEffect = []
 
 
@@ -292,16 +294,21 @@ while running:
             if event.key == pygame.K_s:
                 player.y_change = player.ySpeed
 
-            #Change Bullet Type
-            if event.key == pygame.K_b:
-                if bullet_type == "bullet":
-                    bullet_type = "fire"
-                elif bullet_type == "fire":
-                    bullet_type = "bullet"
+            #Toggle Bullet Type
+            # if event.key == pygame.K_b:
+            #     if player.bullet == "bullet":
+            #         player.bullet = "fire"
+            #     elif player.bullet == "fire":
+            #         player.bullet = "bullet"
+
+            # for power in powerUpsInEffect:
+            #     if power == FirePowerUp:
+            #         player.bullet == "fire"
+
             # Bullet Movement
-            if count > bulletDelay or bullet_type == "fire":
+            if count > bulletDelay or player.bullet == "fire":
                 count = 0
-                if bullet_type == "fire":
+                if player.bullet == "fire":
                     bullet = Fire(player.x, player.y)
                 else:
                     bullet = Bullet(player.x, player.y)

@@ -77,3 +77,21 @@ class PortalPowerUp(PowerUp):
     def removePlayerEffectIfExpired(self, player):
         return True
 
+class FirePowerUp(PowerUp):
+
+    def __init__(self, x, y):
+        super(FirePowerUp, self).__init__(
+            x=x,
+            y=y,
+            imagePath="assets/fire_power.png"
+        )
+
+    def applyPlayerEffect(self, player):
+        self.expirationTime = datetime.now() + timedelta(0, 10)
+        player.bullet = "fire"
+
+    def removePlayerEffectIfExpired(self, player):
+        if datetime.now() > self.expirationTime:
+            player.bullet = "bullet"
+            return True
+        return False
