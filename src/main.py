@@ -186,7 +186,6 @@ bullets = []
 direction_shot = ""
 bullet_change = 5
 bullet_group = pygame.sprite.Group()
-# bullet_type = "bullet"
 
 #Bullet Delay
 bulletDelay = 25
@@ -294,16 +293,12 @@ while running:
             if event.key == pygame.K_s:
                 player.y_change = player.ySpeed
 
-            #Toggle Bullet Type
+            # # Toggle Bullet Type
             # if event.key == pygame.K_b:
             #     if player.bullet == "bullet":
             #         player.bullet = "fire"
             #     elif player.bullet == "fire":
             #         player.bullet = "bullet"
-
-            # for power in powerUpsInEffect:
-            #     if power == FirePowerUp:
-            #         player.bullet == "fire"
 
             # Bullet Movement
             if count > bulletDelay or player.bullet == "fire":
@@ -386,7 +381,6 @@ while running:
 
     # Bullet Moving
     for b in bullets:
-        # fire_bullet(b.x, b.y)
         if b.direction == "up":
             b.y -= bullet_change
         if b.direction == "down":
