@@ -1,4 +1,4 @@
-door clone.pngimport os.path
+import os.path
 import pygame
 import random
 import math
