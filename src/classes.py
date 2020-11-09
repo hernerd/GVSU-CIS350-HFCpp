@@ -6,17 +6,22 @@ filepath = os.path.dirname(__file__)
 
 
 class Player(pygame.sprite.Sprite):
-    idle_images = []
+    idle_right = []
     right_walk = []
+    idle_left = []
+    left_walk = []
     i_frame = 0
     r_frame = 0
     moving = False
+    facing = "right"
+    dirX = ""
+    dirY = ""
 
     def __init__(self, x_pos, y_pos):
         pygame.sprite.Sprite.__init__(self)
         self.load_images()
         self.name = "player"
-        self.image = self.idle_images[0]
+        self.image = self.idle_right[0]
         self.x = x_pos
         self.y = y_pos
         self.rect = self.image.get_rect()
@@ -34,26 +39,36 @@ class Player(pygame.sprite.Sprite):
         img_y = 0
         player_sheet = SpriteSheet("assets/player_spritesheet.png")
         player_walk = SpriteSheet("assets/player_walk.png")
+        player_left = SpriteSheet("assets/player_left.png")
+        player_walk_left = SpriteSheet("assets/player_walk_left.png")
         for i in range(10):
             for j in range(6):
-                self.idle_images.append(player_sheet.get_image(img_x, img_y, 50, 37))
+                self.idle_right.append(player_sheet.get_image(img_x, img_y, 50, 37))
+                self.idle_left.append(player_left.get_image(img_x, img_y, 50, 37))
             img_x += 50
         img_x = 0
         for i in range(8):
             for j in range(6):
                 self.right_walk.append(player_walk.get_image(img_x, img_y, 50, 37))
+                self.left_walk.append(player_walk_left.get_image(img_x, img_y, 50, 37))
             img_x += 50
 
     def pos(self, x_pos, y_pos):
         if not self.moving:
-            self.image = self.idle_images[self.i_frame]
+            if self.facing == "right":
+                self.image = self.idle_right[self.i_frame]
+            if self.facing == "left":
+                self.image = self.idle_left[self.i_frame]
             self.mask = pygame.mask.from_surface(self.image)
             # print("Frames: ", self.i_frame)
             self.i_frame += 1
             if self.i_frame >= 60:
                 self.i_frame = 0
         if self.moving:
-            self.image = self.right_walk[self.r_frame]
+            if self.facing == "right":
+                self.image = self.right_walk[self.r_frame]
+            if self.facing == "left":
+                self.image = self.left_walk[self.r_frame]
             self.mask = pygame.mask.from_surface(self.image)
             # print("Frames: ", self.r_frame)
             self.r_frame += 1
