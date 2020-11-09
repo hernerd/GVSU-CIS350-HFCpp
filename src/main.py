@@ -254,6 +254,7 @@ lower_bound = 525
 left_bound = 70
 right_bound = 730
 
+coolDownTime = 0
 FPS = 60
 clock = pygame.time.Clock()
 level = 0
@@ -264,6 +265,9 @@ start()
 running = True
 while running:
     clock.tick(FPS)
+
+    if (coolDownTime > 0):
+        coolDownTime = coolDownTime - 1
     # screen.fill((255, 255, 255))
     screen.blit(background, (0, 0))
     if room is None:
@@ -430,7 +434,8 @@ while running:
 
     # Checking Enemy Collisions
     for e in enemy_group:
-        if pygame.sprite.collide_mask(player, e):
+        if pygame.sprite.collide_mask(player, e) and coolDownTime == 0:
+            coolDownTime = 5
             player.health -= e.damage
             if player.health <= 0:
                 running = False
