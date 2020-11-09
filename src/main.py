@@ -10,7 +10,7 @@ filepath = os.path.dirname(__file__)
 
 pygame.init()
 
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((800, 600), flags=pygame.SCALED | pygame.RESIZABLE)
 
 
 pygame.display.set_caption("Dungeon Crawler")
@@ -179,6 +179,28 @@ def check_enemy_collision(self, enemy):
         if self.name == "ninja":
             self.y_change = 10
             self.x_change = 10
+            
+            
+def collide(self, obst):
+    if pygame.sprite.collide_mask(self, obst):
+        x_offset = obst.x - self.x
+        y_offset = obst.y - self.y
+        if self.dirX != "":
+            if x_offset < 0:
+                self.x_change = .1
+            if x_offset > 0:
+                self.x_change = -.1
+        if self.dirY != "":
+            if y_offset < 0:
+                self.y_change = .1
+            if y_offset > 0:
+                self.y_change = -.1
+        while pygame.sprite.collide_mask(self, obst):
+            self.x += self.x_change
+            self.y += self.y_change
+            self.pos(self.x, self.y)
+        self.x_change = 0
+        self.y_change = 0
 
 
 # Bullet
@@ -275,10 +297,40 @@ while running:
         rooms.append(room)
         enemy_group = room.enemy_group
         obstacle_group = room.obstacle_group
+        for e in enemy_group:
+            enemies.append(e)
+            mobile_group.add(e)
+        player.x = playerX
+        player.y = playerY
+    if room.status == "complete" and pygame.sprite.collide_mask(player, door):
+        if room.forward:
+            room = room.forward
+        else:
+            roomIndex += 1
+            room = make_room(level)
+            rooms.append(room)
+            rooms[roomIndex].backward = rooms[roomIndex-1]
+            rooms[roomIndex-1].forward = rooms[roomIndex]
+            backdoor = Door(400, 570)
+            backdoor.image = pygame.image.load(os.path.join(filepath, "assets/obstacles/door clone.png"))
+            door_group.add(backdoor)
+        enemy_group = room.enemy_group
+        obstacle_group = room.obstacle_group
+        player.x = playerX
+        player.y = playerY
+        if len(lingering_image) > 0:
+            lingering_image.empty()
+            lingering_count = 0
         # print(level)
         for e in enemy_group:
             enemies.append(e)
             mobile_group.add(e)
+    if room.backward and pygame.sprite.collide_mask(player, backdoor):
+        room = room.backward
+        enemy_group = room.enemy_group
+        obstacle_group = room.obstacle_group
+        player.x = 400
+        player.y = upper_bound + 30
 
     count += 1
     for event in pygame.event.get():
@@ -290,12 +342,22 @@ while running:
             # Player Movement
             if event.key == pygame.K_a:
                 player.x_change = -player.xSpeed
+                player.moving = True
+                player.dirX = "left"
+                player.facing = "left"
             if event.key == pygame.K_d:
                 player.x_change = player.xSpeed
+                player.moving = True
+                player.dirX = "right"
+                player.facing = "right"
             if event.key == pygame.K_w:
                 player.y_change = -player.ySpeed
+                player.moving = True
+                player.dirY = "up"
             if event.key == pygame.K_s:
                 player.y_change = player.ySpeed
+                player.moving = True
+                player.dirY = "down"
 
             # # Toggle Bullet Type
             # if event.key == pygame.K_b:
@@ -337,6 +399,11 @@ while running:
                 player.y_change = 0
             if player.x_change == 0 and player.y_change == 0:
                 player.moving = False
+                
+    if player.x_change != 0 and player.y_change == 0:
+        player.dirY = ""
+    elif player.x_change == 0 and player.y_change != 0:
+        player.dirX = ""
 
     player.x += player.x_change
     if player.x <= left_bound:
@@ -368,6 +435,14 @@ while running:
         dx, dy = player.x - e.x, player.y - e.y
         dist = math.hypot(dx, dy)
         dx, dy = dx/dist, dy/dist
+        if dx > 0:
+            e.dirX = "right"
+        if dx < 0:
+            e.dirX = "left"
+        if dy > 0:
+            e.dirY = "down"
+        if dy < 0:
+            e.dirY = "up"
         if e.name == "enemy":
             e.x += dx
             e.y += dy
@@ -417,7 +492,8 @@ while running:
                 
     for mob in mobile_group:
         for obstacle in obstacle_group:
-            check_object_collision(mob, obstacle)
+            # check_object_collision(mob, obstacle)
+            collide(mob, obstacle)
             if pygame.sprite.collide_mask(mob, obstacle) and obstacle.type == "trap":
                 mob.health -= obstacle.damage
                 if mob.health <= 0:
@@ -450,7 +526,7 @@ while running:
     # Killing Enemies 
     for e in enemy_group:
         for b in bullet_group:
-            if pygame.sprite.collide_rect(b, e):
+            if pygame.sprite.collide_mask(b, e):
                 e.health -= b.damage
                 if e.health <= 0:
                     enemy_group.remove(e)
@@ -479,7 +555,7 @@ while running:
         dframe += 1
             
     if dframe == 2 and pygame.sprite.collide_mask(player, door):
-        room = None
+        room.status = "complete"
         level += 1
         dframe = 0
         door.reset_image()
