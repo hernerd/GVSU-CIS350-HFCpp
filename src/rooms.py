@@ -1,4 +1,4 @@
-import os.path
+door clone.pngimport os.path
 import pygame
 import random
 import math
@@ -7,9 +7,6 @@ from classes import Enemy, Ninja, Tank, Obstacle, Trap
 
 filepath = os.path.dirname(__file__)
 
-# level = 0
-# mobile_group = pygame.sprite.Group()
-
 
 class Room:
     difficulty = "normal"
@@ -17,20 +14,27 @@ class Room:
     active_enemies = 0
     num_enemies = 0
     level = 0
-    forward = 0
-    backward = 0
     status = "progressing"
-    enemy_group = pygame.sprite.Group()
-    obstacle_group = pygame.sprite.Group()
+    patterns = []
+    # enemy_group = pygame.sprite.Group()
+    # obstacle_group = pygame.sprite.Group()
 
     def __init__(self, level):
+        self.patterns = []
+        self.enemy_group = pygame.sprite.Group()
+        self.obstacle_group = pygame.sprite.Group()
         self.level = level
+        self.index = 0
+        self.forward = None
+        self.backward = None
+        self.determine_obstacles(level)
         self.prepare_obstacles(level)
         self.determine_enemies(level)
         self.prepare_enemies(self.active_enemies)
+        # print(self.obstacle_group, self.enemy_group, self.patterns)
 
     def determine_enemies(self, level):
-        self.num_enemies = random.randint(level+2, level+5)
+        self.num_enemies = random.randint(level+1, level+3)
         if level < 3:
             self.active_enemies = 1
         elif 3 <= level < 5:
@@ -67,23 +71,22 @@ class Room:
                 tanks -= 1
 
     def determine_obstacles(self, level):
-        pattern = 0
         if level == 0:
-            pattern = 0
-        elif level < 3:
-            pattern = 1
-        elif 3 <= level <= 5:
-            pattern = 2
-        elif 5 <= level <= 7:
-            pattern = 3
-        return pattern
+            return
+        else:
+            for i in range(4):
+                self.patterns.append(random.randint(0, 1))
+
+            # print(self.patterns)
 
     def prepare_obstacles(self, level):
-        pattern = self.determine_obstacles(level)
+        patterns = self.patterns
         x = 0
         y = 0
+        if len(patterns) == 0:
+            return
 
-        if pattern == 1:
+        if patterns[0] == 1:
             x = 370
             y = 396
             for i in range(13):
@@ -99,12 +102,107 @@ class Room:
             x = 370
             y = 300
             for i in range(7):
+                x -= 16
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+            x = 430
+            y = 300
+            for i in range(7):
+                x += 16
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+        if patterns[1] == 1:
+            x = 274
+            y = 316
+            for i in range(3):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                y += 16
+            x = 526
+            y = 284
+            for i in range(3):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                y -= 16
+            x = 490
+            y = 348
+            for i in range(8):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                x += 16
+            x = 310
+            y = 252
+            for i in range(8):
                 o = Obstacle(x, y)
                 self.obstacle_group.add(o)
                 x -= 16
-            x = 430
-            y = 300
+            x = 262
             for i in range(7):
+                y -= 16
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+            x = 538
+            y = 348
+            for i in range(7):
+                y += 16
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+        if patterns[2] == 1:
+            x = 384
+            y = 464
+            for i in range(3):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                x += 16
+            x = 602
+            y = 412
+            for i in range(4):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                x += 16
+            o = Obstacle(x-16, y+16)
+            self.obstacle_group.add(o)
+            x = 198
+            y = 172
+            for i in range(4):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                x -= 16
+            o = Obstacle(x+16, y-16)
+            self.obstacle_group.add(o)
+            x = 640
+            y = 284
+            for i in range(3):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                y += 16
+            x = 592
+            y = 236
+            for i in range(4):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                y -= 16
+            x = 544
+            y = 172
+            for i in range(6):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                x += 16
+            x = 160
+            y = 284
+            for i in range(3):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                y += 16
+            x = 208
+            y = 348
+            for i in range(4):
+                o = Obstacle(x, y)
+                self.obstacle_group.add(o)
+                y += 16
+            x = 176
+            y = 412
+            for i in range(6):
                 o = Obstacle(x, y)
                 self.obstacle_group.add(o)
                 x += 16
