@@ -314,7 +314,7 @@ while running:
             rooms[roomIndex].backward = rooms[roomIndex-1]
             rooms[roomIndex-1].forward = rooms[roomIndex]
             backdoor = Door(400, 570)
-            backdoor.image = pygame.image.load(os.path.join(filepath, "assets/obstacles/door clone.png"))
+            backdoor.image = pygame.image.load(os.path.join(filepath, "assets/door clone.png"))
             door_group.add(backdoor)
         enemy_group = room.enemy_group
         obstacle_group = room.obstacle_group
