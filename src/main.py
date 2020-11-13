@@ -282,6 +282,8 @@ clock = pygame.time.Clock()
 level = 0
 room = None
 rooms = []
+roomIndex = 0
+backdoor = None
 # Game running
 start()
 running = True
