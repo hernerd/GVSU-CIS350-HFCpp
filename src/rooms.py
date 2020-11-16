@@ -3,7 +3,7 @@ import pygame
 import random
 import math
 
-from classes import Enemy, Ninja, Tank, Obstacle, Trap
+from classes import Enemy, Ninja, Tank, Obstacle, Trap, Ranger, Boss
 
 filepath = os.path.dirname(__file__)
 
@@ -34,25 +34,37 @@ class Room:
         # print(self.obstacle_group, self.enemy_group, self.patterns)
 
     def determine_enemies(self, level):
-        self.num_enemies = random.randint(level+1, level+3)
+        if level != 10:
+            self.num_enemies = random.randint(level+1, level+3)
+        else:
+            self.num_enemies = 1
         if level < 3:
             self.active_enemies = 1
         elif 3 <= level < 5:
             self.active_enemies = 2
+        elif level == 10:
+            self.active_enemies = 4
         elif level >= 5:
             self.active_enemies = 3
 
     def prepare_enemies(self, enem_types):
-        bees, ninjas, tanks = 0, 0, 0
+        bees, ninjas, tanks, rangers, boss = 0, 0, 0, 0, 0
         if enem_types == 1:
             bees = self.num_enemies
         elif enem_types == 2:
-            bees = math.floor(self.num_enemies * .7)
-            ninjas = math.ceil(self.num_enemies * .3)
+            bees = math.floor(self.num_enemies * .5)
+            ninjas = math.floor(self.num_enemies * .2)
+            rangers = math.ceil(self.num_enemies *.3)
+
         elif enem_types == 3:
             bees = math.floor(self.num_enemies * .5)
             ninjas = math.ceil(self.num_enemies * .3)
             tanks = math.floor(self.num_enemies * .2)
+        
+        elif enem_types == 4:
+            boss = self.num_enemies
+
+            
 
         for i in range(self.num_enemies):
             x_pos = random.randint(70, 730)
@@ -61,14 +73,23 @@ class Room:
                 e = Enemy(x_pos, y_pos)
                 self.enemy_group.add(e)
                 bees -= 1
+            elif boss == 1:
+                e = Boss(400,290)
+                self.enemy_group.add(e)
+                boss -= 1
             elif bees == 0 and ninjas > 0:
                 e = Ninja(x_pos, y_pos)
                 self.enemy_group.add(e)
                 ninjas -= 1
-            elif bees == 0 and ninjas == 0 and tanks > 0:
+            elif bees == 0 and ninjas == 0 and rangers > 0:
+                e = Ranger(x_pos, y_pos)
+                self.enemy_group.add(e)
+                rangers -= 1
+            elif bees == 0 and ninjas == 0 and rangers == 0 and tanks > 0:
                 e = Tank(x_pos, y_pos)
                 self.enemy_group.add(e)
                 tanks -= 1
+            
 
     def determine_obstacles(self, level):
         if level == 0:

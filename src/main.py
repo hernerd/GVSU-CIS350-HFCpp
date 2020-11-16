@@ -208,6 +208,9 @@ bullets = []
 direction_shot = ""
 bullet_change = 5
 bullet_group = pygame.sprite.Group()
+enemy_bullet_group = pygame.sprite.Group()
+boss_group = pygame.sprite.Group()
+enemy_bullets = []
 
 #Bullet Delay
 bulletDelay = 25
@@ -298,6 +301,11 @@ while running:
         room = make_room(level)
         rooms.append(room)
         enemy_group = room.enemy_group
+        for e in enemy_group:
+            if e.name == "boss":
+                boss_group.add(e)
+                enemy_group.remove(e)
+
         obstacle_group = room.obstacle_group
         for e in enemy_group:
             enemies.append(e)
@@ -361,12 +369,6 @@ while running:
                 player.moving = True
                 player.dirY = "down"
 
-            # # Toggle Bullet Type
-            # if event.key == pygame.K_b:
-            #     if player.bullet == "bullet":
-            #         player.bullet = "fire"
-            #     elif player.bullet == "fire":
-            #         player.bullet = "bullet"
 
             # Bullet Movement
             if count > bulletDelay or player.bullet == "fire":
@@ -419,20 +421,6 @@ while running:
     elif player.y >= lower_bound:
         player.y = lower_bound
 
-    # Enemy Movement
-    # for e in enemy_group:
-    #     e.x += e.x_change
-    #     if e.x <= 0:
-    #         e.x_change = 7
-    #     elif e.x >= 760:
-    #         e.x_change = -7
-
-    #     e.y += e.y_change
-    #     if e.y <= 0:
-    #         e.y_change = 7
-    #     elif e.y >= 560:
-    #         e.y_change = -7
-
     for e in enemy_group:
         dx, dy = player.x - e.x, player.y - e.y
         dist = math.hypot(dx, dy)
@@ -458,8 +446,70 @@ while running:
             if tp % 500 == 0:
                 e.x = random.randint(70, 730)
                 e.y = random.randint(70, 525)
-            
+        if e.name == "ranger":
+             e.x += dx
+             e.y += dy
+             shoot = random.randint(0, 500)
+             if shoot % 500 == 0:
+                    enemy_shot = Bullet(e.x, e.y)
+                    enemy_shot.x = e.x
+                    enemy_shot.y = e.y
+                    enemy_shot.direction = e.dirX
+                    enemy_bullets.append(enemy_shot)
+                    enemy_bullet_group.add(enemy_shot)
 
+
+    for e in boss_group:
+        shoot = random.randint(0, 500)
+        if shoot % 500 == 0:
+            enemy_up = Bullet(e.x, e.y)
+            enemy_up.x = e.x
+            enemy_up.y = e.y
+            enemy_up.direction = "up"
+            enemy_bullets.append(enemy_up)
+            enemy_bullet_group.add(enemy_up)
+            enemy_down = Bullet(e.x, e.y)
+            enemy_down.x = e.x
+            enemy_down.y = e.y
+            enemy_down.direction = "down"
+            enemy_bullets.append(enemy_down)
+            enemy_bullet_group.add(enemy_down)
+            enemy_right = Bullet(e.x, e.y)
+            enemy_right.x = e.x
+            enemy_right.y = e.y
+            enemy_right.direction = "right"
+            enemy_bullets.append(enemy_right)
+            enemy_bullet_group.add(enemy_right)
+            enemy_left = Bullet(e.x, e.y)
+            enemy_left.x = e.x
+            enemy_left.y = e.y
+            enemy_left.direction = "left"
+            enemy_bullets.append(enemy_left)
+            enemy_bullet_group.add(enemy_left)
+
+    for b in enemy_bullets:
+        if b.direction == "up":
+            b.y -= bullet_change
+        if b.direction == "down":
+            b.y += bullet_change
+        if b.direction == "left":
+            b.x -= bullet_change
+        if b.direction == "right":
+            b.x += bullet_change
+        b.pos(b.x, b.y)
+        if b.y <= upper_bound or b.y >= lower_bound or b.x <= left_bound or b.x >= right_bound:
+            enemy_bullets.remove(b)
+            enemy_bullet_group.remove(b)
+            
+    for b in enemy_bullet_group:
+         if pygame.sprite.collide_rect(b, player):
+             player.health -= b.damage
+             enemy_bullets.remove(b)
+             enemy_bullet_group.remove(b)
+             if player.health <= 0:
+                 running = False
+
+                
     # Bullet Moving
     for b in bullets:
         if b.direction == "up":
@@ -517,6 +567,13 @@ while running:
             player.health -= e.damage
             if player.health <= 0:
                 running = False
+    
+    for e in boss_group:
+        if pygame.sprite.collide_mask(player, e) and coolDownTime == 0:
+            coolDownTime = 5
+            player.health -= e.damage
+            if player.health <= 0:
+                running = False
                 
     # lingering images
     lingering_count = 0
@@ -535,6 +592,17 @@ while running:
                     enemies.remove(e)
                 bullet_group.remove(b)
                 bullets.remove(b)
+    
+    for e in boss_group:
+        for b in bullet_group:
+            if pygame.sprite.collide_mask(b, e):
+                e.health -= b.damage
+                if e.health <= 0:
+                    enemy_group.remove(e)
+                    enemies.remove(e)
+                bullet_group.remove(b)
+                bullets.remove(b)
+
 
     # check player contacting powerUp
     for powerUp in powerUpsOnScreen:
@@ -569,5 +637,6 @@ while running:
     door_group.draw(screen)
     player_group.draw(screen)
     bullet_group.draw(screen)
+    enemy_bullet_group.draw(screen)
     updateUI()
     pygame.display.update()

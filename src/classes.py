@@ -119,6 +119,26 @@ class Tank(pygame.sprite.Sprite):
         self.x = x
         self.y = y
 
+class Ranger(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.name = "ranger"
+        self.image = pygame.image.load(os.path.join(filepath, "assets/ranger.png")).convert_alpha()
+        self.x = x
+        self.y = y
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.x_change = 1
+        self.y_change = 1
+        self.health = 10
+        self.damage = 10
+
+    def pos(self, x, y):
+        self.rect.center = [x, y]
+        self.x = x
+        self.y = y
+
 class Ninja(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
@@ -133,6 +153,28 @@ class Ninja(pygame.sprite.Sprite):
         self.y_change = 15
         self.health = 5
         self.damage = 5
+
+    def pos(self, x, y):
+        self.rect.center = [x, y]
+        self.x = x
+        self.y = y
+
+class Boss(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.name = "boss"
+        self.image = pygame.image.load(os.path.join(filepath, "assets/boss.png")).convert_alpha()
+        #400
+        self.x = x
+        #290
+        self.y = y
+        self.rect = self.image.get_rect()
+        self.rect.center = [x, y]
+        self.mask = pygame.mask.from_surface(self.image)
+        self.x_change = 15
+        self.y_change = 15
+        self.health = 500
+        self.damage = 20
 
     def pos(self, x, y):
         self.rect.center = [x, y]
