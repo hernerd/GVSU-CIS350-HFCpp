@@ -563,14 +563,14 @@ while running:
     # Checking Enemy Collisions
     for e in enemy_group:
         if pygame.sprite.collide_mask(player, e) and coolDownTime == 0:
-            coolDownTime = 5
+            coolDownTime = 20
             player.health -= e.damage
             if player.health <= 0:
                 running = False
     
     for e in boss_group:
         if pygame.sprite.collide_mask(player, e) and coolDownTime == 0:
-            coolDownTime = 5
+            coolDownTime = 20
             player.health -= e.damage
             if player.health <= 0:
                 running = False
@@ -638,5 +638,6 @@ while running:
     player_group.draw(screen)
     bullet_group.draw(screen)
     enemy_bullet_group.draw(screen)
+    boss_group.draw(screen)
     updateUI()
     pygame.display.update()
