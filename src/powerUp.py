@@ -3,7 +3,8 @@ import random
 
 
 class PowerUp:
-    def __init__(self, x, y, imagePath):
+    def __init__(self, x, y, imagePath, isInventory = False):
+        self.isInventory = isInventory
         self.x = x
         self.y = y
         self.imagePath = imagePath
@@ -42,7 +43,8 @@ class MovementPowerUp(PowerUp):
         super(MovementPowerUp, self).__init__(
             x=x,
             y=y,
-            imagePath="assets/running-shoe.png"
+            imagePath="assets/running-shoe.png",
+            isInventory=True
         )
 
     def applyPlayerEffect(self, player):
@@ -65,7 +67,8 @@ class PortalPowerUp(PowerUp):
         super(PortalPowerUp, self).__init__(
             x=x,
             y=y,
-            imagePath="assets/portal.png"
+            imagePath="assets/portal.png",
+            isInventory=True
         )
 
     def applyPlayerEffect(self, player):
@@ -83,7 +86,8 @@ class FirePowerUp(PowerUp):
         super(FirePowerUp, self).__init__(
             x=x,
             y=y,
-            imagePath="assets/fire_power.png"
+            imagePath="assets/fire_power.png",
+            isInventory=True
         )
 
     def applyPlayerEffect(self, player):
