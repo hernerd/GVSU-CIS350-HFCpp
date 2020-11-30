@@ -461,7 +461,7 @@ while running:
 
     for e in boss_group:
         shoot = random.randint(0, 500)
-        if shoot % 500 == 0:
+        if shoot % 100 == 0:
             enemy_up = Bullet(e.x, e.y)
             enemy_up.x = e.x
             enemy_up.y = e.y
@@ -487,7 +487,7 @@ while running:
             enemy_bullets.append(enemy_left)
             enemy_bullet_group.add(enemy_left)
 
-    for b in enemy_bullets:
+    for b in enemy_bullet_group:
         if b.direction == "up":
             b.y -= bullet_change
         if b.direction == "down":
