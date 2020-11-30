@@ -232,7 +232,6 @@ def displayPowerUp(powerUp):
     image = pygame.image.load(os.path.join(filepath, powerUp.imagePath))
     screen.blit(image, (powerUp.x, powerUp.y))
 
-
 def fire_bullet(x, y):
     screen.blit(bullet.image, (x-7, y-5))
 
@@ -245,6 +244,13 @@ def updateUI():
         heartImage = pygame.image.load(os.path.join(filepath, "assets/heart.png"))
         screen.blit(heartImage, (11 + (40 * index), 565))
 
+    # inventory
+    currentItem = player.getCurrentInventoryItem()
+    if currentItem is not None:
+        inventoryImage = pygame.image.load(os.path.join(filepath, currentItem.imagePath))
+        pygame.draw.rect(screen, (92, 64, 51), [757, 3, 40, 40])
+        screen.blit(inventoryImage, (765, 10))
+
     # PowerUps in effect
     numPowerUps = len(powerUpsInEffect)
     if numPowerUps > 0:
@@ -253,7 +259,7 @@ def updateUI():
         index = 0
         for currentPowerUp in powerUpsInEffect:
             image = pygame.image.load(os.path.join(filepath, currentPowerUp.imagePath))
-            screen.blit(image, (789 - (40 * index) - 24, 565))
+            screen.blit(image, (765 - (40 * index), 565))
             index += 1
          
 def start():
@@ -348,7 +354,6 @@ while running:
             running = False
 
         if event.type == pygame.KEYDOWN:
-            player.moving = True
             # Player Movement
             if event.key == pygame.K_a:
                 player.x_change = -player.xSpeed
@@ -369,6 +374,14 @@ while running:
                 player.moving = True
                 player.dirY = "down"
 
+            # Inventory management
+            if event.key == pygame.K_q:
+                player.setNextInventoryItem()
+            if event.key == pygame.K_SPACE:
+                usedPowerUp = player.useCurrentItem()
+                if usedPowerUp is not None:
+                    usedPowerUp.applyPlayerEffect(player)
+                    powerUpsInEffect.append(usedPowerUp)
 
             # Bullet Movement
             if count > bulletDelay or player.bullet == "fire":
@@ -563,14 +576,14 @@ while running:
     # Checking Enemy Collisions
     for e in enemy_group:
         if pygame.sprite.collide_mask(player, e) and coolDownTime == 0:
-            coolDownTime = 5
+            coolDownTime = 20
             player.health -= e.damage
             if player.health <= 0:
                 running = False
     
     for e in boss_group:
         if pygame.sprite.collide_mask(player, e) and coolDownTime == 0:
-            coolDownTime = 5
+            coolDownTime = 20
             player.health -= e.damage
             if player.health <= 0:
                 running = False
@@ -607,9 +620,13 @@ while running:
     # check player contacting powerUp
     for powerUp in powerUpsOnScreen:
         if powerUp.x - 24 <= player.x <= powerUp.x + 24 and powerUp.y - 24 <= player.y <= powerUp.y + 24:
-            powerUp.applyPlayerEffect(player)
-            powerUpsOnScreen.remove(powerUp)
-            powerUpsInEffect.append(powerUp)
+            if powerUp.isInventory:
+                player.addToInventory(powerUp)
+                powerUpsOnScreen.remove(powerUp)
+            else:
+                powerUp.applyPlayerEffect(player)
+                powerUpsOnScreen.remove(powerUp)
+                powerUpsInEffect.append(powerUp)
 
     # display powerUps
     for powerUp in powerUpsOnScreen:
@@ -638,5 +655,6 @@ while running:
     player_group.draw(screen)
     bullet_group.draw(screen)
     enemy_bullet_group.draw(screen)
+    boss_group.draw(screen)
     updateUI()
     pygame.display.update()

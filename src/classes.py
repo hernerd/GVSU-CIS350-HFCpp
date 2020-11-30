@@ -33,6 +33,8 @@ class Player(pygame.sprite.Sprite):
         self.x_change = 0
         self.y_change = 0
         self.health = 100
+        self.inventory = []
+        self.inventorySelected = -1
 
     def load_images(self):
         img_x = 0
@@ -77,6 +79,46 @@ class Player(pygame.sprite.Sprite):
         self.rect.center = [x_pos, y_pos]
         self.x = x_pos
         self.y = y_pos
+
+    def addToInventory(self, powerUp):
+        if self.inventorySelected == -1:
+            self.inventorySelected = 0
+
+        self.inventory.append(powerUp)
+
+    def useCurrentItem(self):
+        if self.inventorySelected == -1:
+            return None
+        if self.inventorySelected == 0:
+            powerUp = self.inventory[self.inventorySelected]
+            self.inventory.remove(powerUp)
+            if len(self.inventory) > 0:
+                return powerUp
+            else:
+                self.inventorySelected = -1
+        else:
+            powerUp = self.inventory[self.inventorySelected]
+            self.inventory.remove(powerUp)
+            self.inventorySelected = self.inventorySelected - 1
+            return powerUp
+
+    def getCurrentInventoryItem(self):
+        if self.inventorySelected == -1:
+            return None
+
+        return self.inventory[self.inventorySelected]
+
+    def setNextInventoryItem(self):
+        inventoryLength = len(self.inventory)
+
+        if self.inventorySelected == -1:
+            return
+        elif inventoryLength == 1:
+            return
+        elif self.inventorySelected == inventoryLength - 1:
+            self.inventorySelected = 0
+        else:
+            self.inventorySelected = self.inventorySelected + 1
 
 
 class Enemy(pygame.sprite.Sprite):
