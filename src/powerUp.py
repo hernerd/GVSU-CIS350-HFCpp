@@ -99,3 +99,22 @@ class FirePowerUp(PowerUp):
             player.bullet = "bullet"
             return True
         return False
+
+
+class DropKey(PowerUp):
+    def __init__(self, x, y):
+        self.unlocked = False
+        super(DropKey, self).__init__(
+            x=x,
+            y=y,
+            imagePath="assets/key.png"
+        )
+
+    def applyPlayerEffect(self, player):
+        return True
+
+    def removePlayerEffectIfExpired(self, player):
+        return True
+
+    # def isUnlocked(self):
+    #     return self.unlocked

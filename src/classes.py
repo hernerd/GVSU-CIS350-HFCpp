@@ -264,6 +264,7 @@ class Door(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = [pos_x, pos_y]
         self.mask = pygame.mask.from_surface(self.image)
+        self.unlocked = False
 
     def load_images(self):
         door = SpriteSheet("assets/door.png")

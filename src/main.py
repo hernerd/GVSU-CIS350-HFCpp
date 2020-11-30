@@ -2,7 +2,6 @@ import math
 import os.path
 import pygame
 import random
-from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp, FirePowerUp
 from classes import Player, Enemy, Obstacle, Bullet, Trap, Fire, Tank, Ninja, Door
 from rooms import Room
 
@@ -97,6 +96,8 @@ enemy_group = pygame.sprite.Group()
 for e in enemies:
     enemy_group.add(e)
 """
+lastEnemyX = 0
+lastEnemyY = 0
 enemy_group = pygame.sprite.Group()
 
 # mobile group (sprites that move)
@@ -216,15 +217,8 @@ enemy_bullets = []
 bulletDelay = 25
 count = bulletDelay
 
+
 # Power-ups
-powerUpsOnScreen = [MovementPowerUp(random.randint(70, 730), random.randint(70, 525)),
-                    MovementPowerUp(random.randint(70, 730), random.randint(70, 525)),
-                    HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
-                    HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
-                    HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
-                    PortalPowerUp(random.randint(70, 730), random.randint(70, 525)),
-                    FirePowerUp(random.randint(70, 730), random.randint(70, 525)),
-                    FirePowerUp(random.randint(70, 730), random.randint(70, 525)),]
 powerUpsInEffect = []
 
 
@@ -601,6 +595,8 @@ while running:
             if pygame.sprite.collide_mask(b, e):
                 e.health -= b.damage
                 if e.health <= 0:
+                    lastEnemyX = e.x
+                    lastEnemyY = e.y
                     enemy_group.remove(e)
                     enemies.remove(e)
                 bullet_group.remove(b)
@@ -618,18 +614,20 @@ while running:
 
 
     # check player contacting powerUp
-    for powerUp in powerUpsOnScreen:
+    for powerUp in room.powerUpsOnScreen:
         if powerUp.x - 24 <= player.x <= powerUp.x + 24 and powerUp.y - 24 <= player.y <= powerUp.y + 24:
+            if powerUp.imagePath == "assets/key.png":
+                room.unlockDoor = True
             if powerUp.isInventory:
                 player.addToInventory(powerUp)
-                powerUpsOnScreen.remove(powerUp)
+                room.powerUpsOnScreen.remove(powerUp)
             else:
                 powerUp.applyPlayerEffect(player)
-                powerUpsOnScreen.remove(powerUp)
+                room.powerUpsOnScreen.remove(powerUp)
                 powerUpsInEffect.append(powerUp)
 
     # display powerUps
-    for powerUp in powerUpsOnScreen:
+    for powerUp in room.powerUpsOnScreen:
         displayPowerUp(powerUp)
 
     # check for expired powerUps
@@ -638,13 +636,18 @@ while running:
             powerUpsInEffect.remove(powerUp)
             
     if len(enemy_group) == 0 and dframe < 2:
-        door.updateImage()
-        dframe += 1
+        if room.keyDropped is False:
+            room.dropKey(lastEnemyX, lastEnemyY)
+            room.keyDropped = True
+        if room.unlockDoor is True:
+            door.updateImage()
+            dframe += 1
             
     if dframe == 2 and pygame.sprite.collide_mask(player, door):
         room.status = "complete"
         level += 1
         dframe = 0
+        room.unlockDoor = False
         door.reset_image()
         player.x = playerX
         player.y = playerY

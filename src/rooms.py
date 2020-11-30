@@ -4,6 +4,7 @@ import random
 import math
 
 from classes import Enemy, Ninja, Tank, Obstacle, Trap, Ranger, Boss
+from powerUp import MovementPowerUp, HealthPowerUp, PortalPowerUp, FirePowerUp, DropKey
 
 filepath = os.path.dirname(__file__)
 
@@ -31,7 +32,17 @@ class Room:
         self.prepare_obstacles(level)
         self.determine_enemies(level)
         self.prepare_enemies(self.active_enemies)
-        # print(self.obstacle_group, self.enemy_group, self.patterns)
+        self.powerUpsOnScreen = [MovementPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    HealthPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    PortalPowerUp(random.randint(70, 730), random.randint(70, 525)),
+                    FirePowerUp(random.randint(70, 730), random.randint(70, 525))]
+        
+        self.keyDropped = False
+        self.unlockDoor = False
+
+    def dropKey(self, x,y):
+        key = DropKey(x, y)
+        self.powerUpsOnScreen.append(key)
 
     def determine_enemies(self, level):
         if level != 10:
