@@ -96,6 +96,7 @@ class Player(pygame.sprite.Sprite):
                 return powerUp
             else:
                 self.inventorySelected = -1
+                return powerUp
         else:
             powerUp = self.inventory[self.inventorySelected]
             self.inventory.remove(powerUp)
