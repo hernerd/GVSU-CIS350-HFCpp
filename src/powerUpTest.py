@@ -2,8 +2,8 @@ import time
 
 import pygame
 
-from classes import Player
-from powerUp import HealthPowerUp, MovementPowerUp
+from classes import Player, Enemy
+from powerUp import HealthPowerUp, MovementPowerUp, DropKey
 
 
 def initialize_display():
@@ -42,3 +42,15 @@ def test_movement_powerUp():
 
     assert speed.removePlayerEffectIfExpired(player)
     assert player.xSpeed == 5 and player.ySpeed == 5
+
+
+def test_drop_key():
+    screen = initialize_display()
+
+    enemy = Enemy(50,50)
+    enemy.health = 0
+    key = DropKey(50,50)
+
+    player = Player(100, 100)
+    assert key.unlocked == False
+
