@@ -265,13 +265,31 @@ def start():
                 quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 begin = False
-        pygame.display.update()        
+        pygame.display.update()
+        
+        
+def pause():
+    paused = True
+    while paused:
+        screen.blit(pause_screen, (0, 0))
+        pygame.time.delay(60)
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    paused = False
+                if event.key == pygame.K_q:
+                    paused = False
+                    global running
+                    running = False
+        pygame.display.update()
      
+    
 def make_room(lvl):
     r = Room(lvl)
     return r
 
 
+pause_screen = pygame.image.load(os.path.join(filepath, "assets/pause_screen.png"))
 starting_image = pygame.image.load(os.path.join(filepath, "assets/bg_s0.png"))    
 background = pygame.image.load(os.path.join(filepath, "assets/bg_0.png"))
 upper_bound = 54
@@ -367,6 +385,8 @@ while running:
                 player.y_change = player.ySpeed
                 player.moving = True
                 player.dirY = "down"
+            if event.key == pygame.K_ESCAPE:
+                pause()
 
             # Inventory management
             if event.key == pygame.K_q:
