@@ -184,7 +184,7 @@ def check_enemy_collision(self, enemy):
             
 def collide(self, obst):
     if pygame.sprite.collide_mask(self, obst):
-        #f.write(str(self.name)+" collided with obstacle.\n")
+        #f.write(str(self.name)+" collided with obstacle.\n")    #TC16
         x_offset = obst.x - self.x
         y_offset = obst.y - self.y
         if self.dirX != "":
@@ -325,6 +325,7 @@ while running:
         for e in enemy_group:
             if e.name == "boss":
                 boss_group.add(e)
+                f.write("Boss Spawned\n") #TC7
                 enemy_group.remove(e)
 
         obstacle_group = room.obstacle_group
@@ -338,6 +339,7 @@ while running:
             room = room.forward
         else:
             roomIndex += 1
+            f.write("Player moved into new room\n") #T3
             room = make_room(level)
             rooms.append(room)
             rooms[roomIndex].backward = rooms[roomIndex-1]
@@ -375,23 +377,23 @@ while running:
                 player.moving = True
                 player.dirX = "left"
                 player.facing = "left"
-                f.write("Player moving left\n")
+                f.write("Player moving left\n") #TC1
             if event.key == pygame.K_d:
                 player.x_change = player.xSpeed
                 player.moving = True
                 player.dirX = "right"
                 player.facing = "right"
-                f.write("Player moving right\n")
+                f.write("Player moving right\n") #TC1
             if event.key == pygame.K_w:
                 player.y_change = -player.ySpeed
                 player.moving = True
                 player.dirY = "up"
-                f.write("Player moving up\n")
+                f.write("Player moving up\n") #TC1
             if event.key == pygame.K_s:
                 player.y_change = player.ySpeed
                 player.moving = True
                 player.dirY = "down"
-                f.write("Player moving down\n")
+                f.write("Player moving down\n") #TC1
             if event.key == pygame.K_ESCAPE:
                 pause()
 
@@ -417,22 +419,22 @@ while running:
                     bullet.direction = "up"
                     bullets.append(bullet)
                     bullet_group.add(bullet)
-                    f.write("Bullet shot moving up\n")
+                    f.write("Bullet shot moving up\n") #TC2 #TC6
                 if event.key == pygame.K_DOWN:
                     bullet.direction = "down"
                     bullets.append(bullet)
                     bullet_group.add(bullet)
-                    f.write("Bullet shot moving down\n")
+                    f.write("Bullet shot moving down\n") #TC2 #TC6
                 if event.key == pygame.K_LEFT:
                     bullet.direction = "left"
                     bullets.append(bullet)
                     bullet_group.add(bullet)
-                    f.write("Bullet shot moving left\n")
+                    f.write("Bullet shot moving left\n") #TC2 #TC6
                 if event.key == pygame.K_RIGHT:
                     bullet.direction = "right"
                     bullets.append(bullet)
                     bullet_group.add(bullet)
-                    f.write("Bullet shot moving up\n")
+                    f.write("Bullet shot moving up\n") #TC2 #TC6
 
 
         if event.type == pygame.KEYUP:
@@ -472,22 +474,23 @@ while running:
             e.dirY = "down"
         if dy < 0:
             e.dirY = "up"
-        f.write(str(e.name)+" offset is " + str(dx) + " and " + str(dy)+ " on x and y\n")
+        f.write(str(e.name)+" offset is " + str(dx) + " and " + str(dy)+ " on x and y\n") #TC4
         if e.name == "enemy":
             e.x += dx
-            e.y += dy
+            e.y += dy #TC8
         if e.name == "tank":
-            e.x += dx * 0.5
+            e.x += dx * 0.5 #TC8
             e.y += dy * 0.5
         if e.name == "ninja":
-            e.x += dx * 1.5
+            e.x += dx * 1.5 #TC8
             e.y += dy * 1.5
             tp = random.randint(0, 500)
             if tp % 500 == 0:
-                e.x = random.randint(70, 730)
+                e.x = random.randint(70, 730) #TC8
                 e.y = random.randint(70, 525)
+                f.write("Ninja teleported \n")
         if e.name == "ranger":
-             e.x += dx
+             e.x += dx  #TC8
              e.y += dy
              shoot = random.randint(0, 500)
              if shoot % 500 == 0:
@@ -497,7 +500,7 @@ while running:
                     enemy_shot.direction = e.dirX
                     enemy_bullets.append(enemy_shot)
                     enemy_bullet_group.add(enemy_shot)
-                    f.write("Enemy shot\n")
+                    f.write("Enemy shot\n") #TC5
 
 
     for e in boss_group:
@@ -582,7 +585,7 @@ while running:
     for b in enemy_bullet_group:
          if pygame.sprite.collide_rect(b, player):
              player.health -= b.damage
-             f.write("Player took " + str(b.damage)+ " damage \n")
+             f.write("Player took " + str(b.damage)+ " damage \n") #TC11
              enemy_bullets.remove(b)
              enemy_bullet_group.remove(b)
              if player.health <= 0:
@@ -644,7 +647,7 @@ while running:
         if pygame.sprite.collide_mask(player, e) and coolDownTime == 0:
             coolDownTime = 20
             player.health -= e.damage
-            f.write("Player took " + str(e.damage)+ " damage \n")
+            f.write("Player took " + str(e.damage)+ " damage \n") #TC11
             if player.health <= 0:
                 running = False
     
@@ -667,7 +670,7 @@ while running:
         for b in bullet_group:
             if pygame.sprite.collide_mask(b, e):
                 e.health -= b.damage
-                f.write(str(e.name)+" took " + str(b.damage)+ " damage \n")
+                f.write(str(e.name)+" took " + str(b.damage)+ " damage \n")  #TC12
                 if e.health <= 0:
                     lastEnemyX = e.x
                     lastEnemyY = e.y
@@ -716,8 +719,10 @@ while running:
         if room.keyDropped is False:
             room.dropKey(lastEnemyX, lastEnemyY)
             room.keyDropped = True
+            f.write("Key Dropped\n") #TC17
         if room.unlockDoor is True:
             door.updateImage()
+            f.write("Key Picked Up\n") #TC17
             dframe += 1
             
     if dframe == 2 and pygame.sprite.collide_mask(player, door):
