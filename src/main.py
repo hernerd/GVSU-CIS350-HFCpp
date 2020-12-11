@@ -184,6 +184,7 @@ def check_enemy_collision(self, enemy):
             
 def collide(self, obst):
     if pygame.sprite.collide_mask(self, obst):
+        #f.write(str(self.name)+" collided with obstacle.\n")
         x_offset = obst.x - self.x
         y_offset = obst.y - self.y
         if self.dirX != "":
@@ -297,6 +298,8 @@ lower_bound = 525
 left_bound = 70
 right_bound = 730
 
+f = open("log.txt", "w")
+
 coolDownTime = 0
 FPS = 60
 clock = pygame.time.Clock()
@@ -372,19 +375,23 @@ while running:
                 player.moving = True
                 player.dirX = "left"
                 player.facing = "left"
+                f.write("Player moving left\n")
             if event.key == pygame.K_d:
                 player.x_change = player.xSpeed
                 player.moving = True
                 player.dirX = "right"
                 player.facing = "right"
+                f.write("Player moving right\n")
             if event.key == pygame.K_w:
                 player.y_change = -player.ySpeed
                 player.moving = True
                 player.dirY = "up"
+                f.write("Player moving up\n")
             if event.key == pygame.K_s:
                 player.y_change = player.ySpeed
                 player.moving = True
                 player.dirY = "down"
+                f.write("Player moving down\n")
             if event.key == pygame.K_ESCAPE:
                 pause()
 
@@ -410,18 +417,23 @@ while running:
                     bullet.direction = "up"
                     bullets.append(bullet)
                     bullet_group.add(bullet)
+                    f.write("Bullet shot moving up\n")
                 if event.key == pygame.K_DOWN:
                     bullet.direction = "down"
                     bullets.append(bullet)
                     bullet_group.add(bullet)
+                    f.write("Bullet shot moving down\n")
                 if event.key == pygame.K_LEFT:
                     bullet.direction = "left"
                     bullets.append(bullet)
                     bullet_group.add(bullet)
+                    f.write("Bullet shot moving left\n")
                 if event.key == pygame.K_RIGHT:
                     bullet.direction = "right"
                     bullets.append(bullet)
                     bullet_group.add(bullet)
+                    f.write("Bullet shot moving up\n")
+
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a or event.key == pygame.K_d:
@@ -460,6 +472,7 @@ while running:
             e.dirY = "down"
         if dy < 0:
             e.dirY = "up"
+        f.write(str(e.name)+" offset is " + str(dx) + " and " + str(dy)+ " on x and y\n")
         if e.name == "enemy":
             e.x += dx
             e.y += dy
@@ -484,6 +497,7 @@ while running:
                     enemy_shot.direction = e.dirX
                     enemy_bullets.append(enemy_shot)
                     enemy_bullet_group.add(enemy_shot)
+                    f.write("Enemy shot\n")
 
 
     for e in boss_group:
@@ -513,6 +527,31 @@ while running:
             enemy_left.direction = "left"
             enemy_bullets.append(enemy_left)
             enemy_bullet_group.add(enemy_left)
+        if shoot % 200 == 0:
+            enemy_up_right = Bullet(e.x, e.y)
+            enemy_up_right.x = e.x
+            enemy_up_right.y = e.y
+            enemy_up_right.direction = "right-up"
+            enemy_bullets.append(enemy_up_right)
+            enemy_bullet_group.add(enemy_up_right)
+            enemy_down_right = Bullet(e.x, e.y)
+            enemy_down_right.x = e.x
+            enemy_down_right.y = e.y
+            enemy_down_right.direction = "right-down"
+            enemy_bullets.append(enemy_down_right)
+            enemy_bullet_group.add(enemy_down_right)
+            enemy_up_left = Bullet(e.x, e.y)
+            enemy_up_left.x = e.x
+            enemy_up_left.y = e.y
+            enemy_up_left.direction = "left-up"
+            enemy_bullets.append(enemy_up_left)
+            enemy_bullet_group.add(enemy_up_left)
+            enemy_down_left = Bullet(e.x, e.y)
+            enemy_down_left.x = e.x
+            enemy_down_left.y = e.y
+            enemy_down_left.direction = "left-down"
+            enemy_bullets.append(enemy_down_left)
+            enemy_bullet_group.add(enemy_down_left)
 
     for b in enemy_bullet_group:
         if b.direction == "up":
@@ -523,6 +562,18 @@ while running:
             b.x -= bullet_change
         if b.direction == "right":
             b.x += bullet_change
+        if b.direction == "right-up":
+            b.x += bullet_change
+            b.y -= bullet_change
+        if b.direction == "right-down":
+            b.x += bullet_change
+            b.y += bullet_change
+        if b.direction == "left-up":
+            b.x -= bullet_change
+            b.y -= bullet_change
+        if b.direction == "left-down":
+            b.x -= bullet_change
+            b.y += bullet_change
         b.pos(b.x, b.y)
         if b.y <= upper_bound or b.y >= lower_bound or b.x <= left_bound or b.x >= right_bound:
             enemy_bullets.remove(b)
@@ -531,6 +582,7 @@ while running:
     for b in enemy_bullet_group:
          if pygame.sprite.collide_rect(b, player):
              player.health -= b.damage
+             f.write("Player took " + str(b.damage)+ " damage \n")
              enemy_bullets.remove(b)
              enemy_bullet_group.remove(b)
              if player.health <= 0:
@@ -592,6 +644,7 @@ while running:
         if pygame.sprite.collide_mask(player, e) and coolDownTime == 0:
             coolDownTime = 20
             player.health -= e.damage
+            f.write("Player took " + str(e.damage)+ " damage \n")
             if player.health <= 0:
                 running = False
     
@@ -614,21 +667,25 @@ while running:
         for b in bullet_group:
             if pygame.sprite.collide_mask(b, e):
                 e.health -= b.damage
+                f.write(str(e.name)+" took " + str(b.damage)+ " damage \n")
                 if e.health <= 0:
                     lastEnemyX = e.x
                     lastEnemyY = e.y
                     enemy_group.remove(e)
                     enemies.remove(e)
+                    f.write(str(e.name)+ " was killed \n")
                 bullet_group.remove(b)
                 bullets.remove(b)
     
     for e in boss_group:
         for b in bullet_group:
             if pygame.sprite.collide_mask(b, e):
+                f.write(str(e.name)+" took " + str(b.damage)+ " damage \n")
                 e.health -= b.damage
                 if e.health <= 0:
                     enemy_group.remove(e)
                     enemies.remove(e)
+                    f.write(str(e.name)+ " was killed \n")
                 bullet_group.remove(b)
                 bullets.remove(b)
 

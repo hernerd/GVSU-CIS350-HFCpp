@@ -2,7 +2,8 @@ import time
 
 import pygame
 
-from classes import Player
+from classes import Player, Enemy, Obstacle, Bullet, Trap, Fire, Tank, Ninja, Door
+from rooms import Room
 from powerUp import HealthPowerUp, MovementPowerUp
 
 
@@ -20,7 +21,6 @@ def test_health_powerUp():
     health.applyPlayerEffect(player)
 
     assert player.health == 100
-
 
 def test_movement_powerUp():
     screen = initialize_display()

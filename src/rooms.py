@@ -53,7 +53,7 @@ class Room:
             self.active_enemies = 1
         elif 3 <= level < 5:
             self.active_enemies = 2
-        elif level == 10:
+        elif level % 10 == 0:
             self.active_enemies = 4
         elif level >= 5:
             self.active_enemies = 3
@@ -103,7 +103,7 @@ class Room:
             
 
     def determine_obstacles(self, level):
-        if level == 0:
+        if level == 0 or level % 10 == 0:
             return
         else:
             for i in range(4):
