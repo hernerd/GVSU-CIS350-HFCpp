@@ -9,40 +9,63 @@ This section describes functional and non-functional requirements for our game b
 ### Enemies
 
 | FR1 | Certain enemies shall shoot projectiles at the player. | TC5 |
+
 | FR2 | Enemies shall be injured when hit by player’s projectiles. | TC12 |
+
 | FR3 | Enemies shall drop a key upon last enemies death. | TC17|
+
 | FR4 | Enemies shall move differently based on their type. | TC8|
+
 | FR5 | Boss enemies shall be harder to defeat than other enemies. | TC9|
+
 | FR6 | Boss enemies shall be stationary.  | TBD|
 
 ### Player
 
 | FR7 | The player shall be able to move up, down, left and right on the screen. | TC1 |
+
 | FR8 | The player shall not walk through obstacles.  | TC16 |
+
 | FR9 | The player shall be able to pick up power ups. | TC13, TC14, TC15, TC18|
+
 | FR10 | The player shall lose health when touching enemies. | TC11|
+
 | FR11 | The player shall be able to move between rooms. | TC3|
+
 | FR12 | The player shall be able to attack enemies.  | TC2, TC12|
+
 | FR13 | The player shall be able to shoot up, down, left, and right.  | TC2|
+
 | FR14 | The player shall be able to interact with the environment.  | TC16|
 
 ### Bullets
 
 | FR15 | Multiple bullets shall be allowed on the screen at once. | TC10 |
+
 | FR16 | Bullets shall damage the player and enemy’s health if hit.  | TC11, TC12 |
+
 | FR17 | Bullets shall not pass through obstacles. | TC16|
+
 | FR18 | Bullets shall have a delay between .5 to 1 seconds. | TC6|
+
 | FR19 | Fire Bullets shall have no delay between shots. | TC6|
+
 | FR20 | Bullets from enemies shall decrease the players health by 1 heart (10 health).  | TC11|
 
 ### Power-Ups
 
 | FR21 | Powerups shall exist that change the player’s stats. | TC13, TC15, TC18 |
+
 | FR22 | Speed Power-ups shall be able to stack and increase the players speed.  | TC13 |
+
 | FR23 | There shall be multiple types of Power-ups. | TC13, TC14, TC15, TC18|
+
 | FR24 | Health Power-ups shall increase the players health by a random number from 1 to 3. | TC15|
+
 | FR25 | Portal Power-ups shall transport the player to a randomly generated location in the room. | TC14|
+
 | FR26 | Fire Power-ups shall last for 10 seconds.  | TC18|
+
 | FR27 | Key Power-ups will unlock the door to the next room when used.  | TC17|
 
 ## Non-Functional Requirements
@@ -50,36 +73,55 @@ This section describes functional and non-functional requirements for our game b
 ### Infastructure
 
 | NFR1 | The game shall only handle one user. | TBD |
+
 | NFR2 | The game shall be playable using a keyboard. | TC1, TC2 |
+
 | NFR3 | Response time between user inputs and game reaction shall be less than .5 seconds. | TBD|
+
 | NFR4 | The game shall run on all major OS that supports Python. | TBD|
+
 | NFR5 | The game shall be created to allow for easy functionality improvements and additions. | TBD|
+
 | NFR6 | The game shall be able to have the window size scaled up and down.  | TBD|
+
 | NFR7 | Level generation shall be endless.  | TBD|
 
 ### Enemies
 
 | NFR8 | Enemies shall path-find to the player. | TC4 |
+
 | NFR9 | Enemies shall become more difficult as the player’s stats should increase. | TBD |
+
 | NFR10 | The game shall have multiple enemy sprites. | TBD|
+
 | NFR11 | Bosses shall spawn every 10 levels. | TC7|
+
 | NFR12 | Enemies shall shoot towards the player. | TC5 |
 
 ### Power-Ups
 
 | NFR13 | Power-ups shall only exist to help the player. | TC13, TC14, TC15, TC18 |
+
 | NFR14 | Power-ups shall exist that are both passive and active. | TC13, TC14, TC15, TC18 |
+
 | NFR15 | The game shall contain a UI that displays all active power-ups. | TC19|
+
 | NFR16 | Power-ups shall carry over from previous rooms. | TC20|
+
 | NFR17 | Power-ups shall be stored for a later use in an inventory system. | TC19, TC20|
 
 ### Player
 
 | NFR18 | The Player’s stats shall increase as the player picks up more power-ups and progresses through the game. |  TC13, TC18 |
+
 | NFR19 | The player shall be viewed from the top down perspective. | TBD |
+
 | NFR20 | The player shall have a UI that outlines the state the player is currently in along with some information about the surrounding rooms and boss enemies. | TBD|
+
 | NFR21 | The player shall be able to move back and forth between levels. | TC3|
+
 | NFR22 | As the player moves there shall be basic animations. | TBD|
+
 | NFR23 | As the player fires a bullet there shall be an animation. | TBD|
 
 # Test Specification
