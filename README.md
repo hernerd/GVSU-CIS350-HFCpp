@@ -17,4 +17,4 @@ Welcome to our Dungeon Crawler game. In this game the player will navigate betwe
 
 ## Run Instructions
 * Open favorite IDE (our team used Visual Studio Code and Pycharm)
-* Run the program and start playing!
+* Run the main program and start playing!
