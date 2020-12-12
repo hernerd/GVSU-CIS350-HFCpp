@@ -504,11 +504,11 @@ while running:
 
 
     for e in boss_group:
-        shoot = random.randint(0, 500)
-        if shoot % 100 == 0:
+        shoot = random.randint(0, 1000)
+        if shoot % 20 ==0:
             enemy_up = Bullet(e.x, e.y)
-            enemy_up.x = e.x
-            enemy_up.y = e.y
+            enemy_up.x = e.x 
+            enemy_up.y = e.y 
             enemy_up.direction = "up"
             enemy_bullets.append(enemy_up)
             enemy_bullet_group.add(enemy_up)
@@ -525,15 +525,15 @@ while running:
             enemy_bullets.append(enemy_right)
             enemy_bullet_group.add(enemy_right)
             enemy_left = Bullet(e.x, e.y)
-            enemy_left.x = e.x
-            enemy_left.y = e.y
+            enemy_left.x = e.x 
+            enemy_left.y = e.y 
             enemy_left.direction = "left"
             enemy_bullets.append(enemy_left)
             enemy_bullet_group.add(enemy_left)
-        if shoot % 200 == 0:
+        if shoot % 100 == 0:
             enemy_up_right = Bullet(e.x, e.y)
             enemy_up_right.x = e.x
-            enemy_up_right.y = e.y
+            enemy_up_right.y = e.y 
             enemy_up_right.direction = "right-up"
             enemy_bullets.append(enemy_up_right)
             enemy_bullet_group.add(enemy_up_right)
@@ -544,14 +544,14 @@ while running:
             enemy_bullets.append(enemy_down_right)
             enemy_bullet_group.add(enemy_down_right)
             enemy_up_left = Bullet(e.x, e.y)
-            enemy_up_left.x = e.x
-            enemy_up_left.y = e.y
+            enemy_up_left.x = e.x 
+            enemy_up_left.y = e.y 
             enemy_up_left.direction = "left-up"
             enemy_bullets.append(enemy_up_left)
             enemy_bullet_group.add(enemy_up_left)
             enemy_down_left = Bullet(e.x, e.y)
-            enemy_down_left.x = e.x
-            enemy_down_left.y = e.y
+            enemy_down_left.x = e.x 
+            enemy_down_left.y = e.y 
             enemy_down_left.direction = "left-down"
             enemy_bullets.append(enemy_down_left)
             enemy_bullet_group.add(enemy_down_left)

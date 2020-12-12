@@ -1,24 +1,125 @@
-enemy offset is -0.054933108819789814 and 0.9984900367832384 on x and y
-enemy offset is -0.0549331088197898 and 0.9984900367832386 on x and y
-enemy offset is -0.05493310881978978 and 0.9984900367832384 on x and y
-enemy offset is -0.054933108819789765 and 0.9984900367832386 on x and y
-enemy offset is -0.05493310881978974 and 0.9984900367832384 on x and y
-enemy offset is -0.05493310881978972 and 0.9984900367832386 on x and y
-enemy offset is -0.054933108819789696 and 0.9984900367832384 on x and y
-enemy offset is -0.05493310881978968 and 0.9984900367832386 on x and y
-enemy offset is -0.054933108819789654 and 0.9984900367832384 on x and y
-enemy offset is -0.05493310881978963 and 0.9984900367832386 on x and y
-enemy offset is -0.05493310881978961 and 0.9984900367832384 on x and y
-enemy offset is -0.0549331088197896 and 0.9984900367832386 on x and y
-enemy offset is -0.05493310881978957 and 0.9984900367832384 on x and y
-enemy offset is -0.05493310881978955 and 0.9984900367832386 on x and y
-enemy offset is -0.05493310881978952 and 0.9984900367832384 on x and y
-enemy offset is -0.054933108819789515 and 0.9984900367832386 on x and y
-enemy offset is -0.05493310881978948 and 0.9984900367832384 on x and y
-enemy offset is -0.05493310881978946 and 0.9984900367832386 on x and y
-enemy offset is -0.05493310881978944 and 0.9984900367832384 on x and y
-enemy offset is -0.054933108819789425 and 0.9984900367832386 on x and y
-enemy offset is -0.05493310881978939 and 0.9984900367832384 on x and y
-enemy offset is -0.05493310881978937 and 0.9984900367832386 on x and y
-enemy offset is -0.054933108819789356 and 0.9984900367832387 on x and y
-enemy offset is -0.05493310881978934 and 0.9984900367832388 on x and y
+Boss Spawned
+Key Dropped
+Player moving right
+Player moving up
+Player moving right
+Player moving up
+Player moving right
+Player took 5 damage 
+Player moving down
+Player moving left
+Player moving down
+Player moving down
+Player moving left
+Player moving up
+Player moving right
+Player took 5 damage 
+Player moving down
+Player took 5 damage 
+Bullet shot moving up
+Player took 5 damage 
+Player moving left
+Bullet shot moving up
+boss took 5 damage 
+Player moving right
+Player took 5 damage 
+Bullet shot moving up
+Player moving left
+Player took 5 damage 
+Player moving right
+boss took 5 damage 
+Player moving left
+Bullet shot moving up
+Player moving right
+Player moving left
+Player moving right
+Player moving left
+boss took 5 damage 
+Player moving right
+Bullet shot moving up
+Player moving left
+Player moving right
+Player moving left
+Player took 5 damage 
+Player moving right
+Player moving left
+Bullet shot moving up
+Player moving right
+Player moving left
+Player moving up
+Player moving left
+Player took 5 damage 
+Player moving right
+Player moving up
+Player moving down
+Player moving right
+Player took 5 damage 
+Bullet shot moving up
+Bullet shot moving up
+Player took 5 damage 
+Bullet shot moving up
+Player moving right
+Player took 5 damage 
+Bullet shot moving up
+boss took 5 damage 
+Bullet shot moving up
+boss took 5 damage 
+Player moving left
+Bullet shot moving up
+boss took 5 damage 
+Player moving right
+boss took 5 damage 
+Bullet shot moving up
+Player moving left
+Bullet shot moving up
+Player took 5 damage 
+Bullet shot moving up
+boss took 5 damage 
+Player moving right
+Bullet shot moving up
+Player took 5 damage 
+Bullet shot moving up
+boss took 5 damage 
+Player moving left
+boss took 5 damage 
+Bullet shot moving up
+Bullet shot moving up
+Player took 5 damage 
+boss took 5 damage 
+Bullet shot moving up
+Player moving left
+boss took 5 damage 
+Bullet shot moving up
+boss took 5 damage 
+Bullet shot moving up
+Player moving left
+Player moving right
+boss took 5 damage 
+Bullet shot moving up
+boss took 5 damage 
+Bullet shot moving up
+Bullet shot moving up
+Bullet shot moving up
+Player moving left
+boss took 5 damage 
+Bullet shot moving up
+boss took 5 damage 
+Bullet shot moving up
+Player moving right
+Player took 5 damage 
+Player moving left
+Bullet shot moving up
+Player took 5 damage 
+Bullet shot moving up
+boss took 5 damage 
+Bullet shot moving up
+Player moving right
+boss took 5 damage 
+Player took 5 damage 
+Player moving left
+Player moving right
+Bullet shot moving up
+Player took 5 damage 
+Player took 5 damage 
+boss took 5 damage 
+Player took 5 damage 
